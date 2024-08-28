@@ -1,0 +1,118 @@
+.navbar-div {
+  
+    display: flex;
+   
+
+  
+    margin-right: 0;
+    
+   
+  
+   border-bottom:1.5px solid #ff7300 ;
+   background-color: #f9fbfc;
+   position: fixed;
+   z-index: 10;
+   width: 100%;
+
+}
+
+.navbar-div {
+    padding: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    margin: 0% 5% 0px 2%;
+    
+    position: relative; /* Ensure z-index works */
+    z-index: 2; /* Logo is above all */
+    
+}
+
+.logo-img img {
+    height: 100%;
+    max-height: 12vh;
+    width: auto;
+   
+}
+
+.logo-text p {
+   color: white ;
+}
+
+.logo-text p {
+    font-size: 2.5vh; /* Adjust as needed */
+    font-weight: bold;
+    color: #333;
+    margin-right: 2px;
+    padding: 0;
+    line-height: 1;
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+   
+    font-size: 25px;
+    padding: 8px;
+    font-weight: 900;
+    margin-top: 1%;
+    flex-grow: 1;  /* Adds some padding on the left and right for spacing */
+}
+
+
+
+
+.header .user-name {
+   
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header .user-name img {
+    height: 3vh;
+    margin-right: 20px;
+    
+    
+}
+
+
+/* Logout Button Section */
+.header .logout-button {
+    margin-right: 4%; /* Margin to the right side for spacing */
+    margin-left: auto;
+    display: flex;
+    gap :10px;
+    justify-content: center;
+    align-items: center;
+    
+     /* Pushes the button to the right side */
+}
+
+.logout-button .text {
+    font-size: 20px;
+
+}
+
+.logout-icon {
+    width: 2.5vw;
+    height: 5vh;
+    cursor: pointer;
+}
+
+.
+
+.header .logout-button button:hover {
+    background-color: #ffbb70; /* Lighter shade on hover */
+}
+
+
+

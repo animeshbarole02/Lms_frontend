@@ -1,0 +1,60 @@
+.table-div {
+   
+    width: 100%;
+    
+    
+    
+  
+}
+
+.custom-table {
+    width: 100%;
+   
+   
+    
+
+ 
+}
+
+.custom-table th {
+    padding: 8px;
+
+    text-align: center; 
+    border: 1px solid #ffe9c2;
+}
+.custom-table td {
+  
+  padding: 3px
+  /* Left align the body text */
+}
+
+
+
+.custom-table th {
+    background-color: #f39256; /* Header background */
+    color: white; /* Header text color */
+    font-weight: bold;
+    text-transform: uppercase;
+
+    
+    
+}
+
+
+
+
+
+.custom-table tr:hover {
+
+    background-color: #ffefe1; /* Hover effect */
+}
+
+.custom-table td {
+    color: #333; 
+    border-left: 1.5px solid orange;
+    border-bottom: 1.5px solid orange;/* Text color */
+}
+
+.custom-table tr td:first-child {
+    font-weight: bold;
+}
