@@ -9,6 +9,7 @@
 
 .custom-table {
     width: 100%;
+ 
    
    
     
@@ -24,7 +25,8 @@
 }
 .custom-table td {
   
-  padding: 3px
+  padding-left: 2%;
+  padding-right:2%
   /* Left align the body text */
 }
 
@@ -32,7 +34,7 @@
 
 .custom-table th {
     background-color: #f39256; /* Header background */
-    color: white; /* Header text color */
+    color: #f9fbfc; /* Header text color */
     font-weight: bold;
     text-transform: uppercase;
 
@@ -50,6 +52,7 @@
 }
 
 .custom-table td {
+    background-color:  #f9fbfc;;
     color: #333; 
     border-left: 1.5px solid orange;
     border-bottom: 1.5px solid orange;/* Text color */

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import LibraryLogo from "../../assets/icons/WithoutBorder.png";
-import Button from "../../components/Button/Button";
+import Button from "../../components/Button/button";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, setError } from "../../redux/authSlice";

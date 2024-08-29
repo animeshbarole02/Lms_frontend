@@ -1,12 +1,12 @@
-import Table from "../../components/Table/Table";
+import Table from "../../components/Table/table";
 import { useState, useCallback, useEffect } from "react";
-import Button from "../../components/Button/Button";
+import Button from "../../components/Button/button";
 import SearchIcon from "../../assets/icons/magnifying-glass.png";
 import LeftPageIcon from "../../assets/icons/LeftPage.png";
 import RightPageIcon from "../../assets/icons/Right-Page.png";
 import EditIcon from "../../assets/icons/EditIcom.png";
 
-import AdminHOC from "../../hoc/AdminHOC";
+import AdminHOC from "../../hoc/adminHOC";
 import Modal from "../../components/modal/modal";
 import Dynamicform from "../../components/forms/dynamicform";
 import DeleteIcon from "../../assets/icons/DeleteIcon.png";
@@ -34,7 +34,7 @@ const Books = () => {
   const [books, setBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [editingBook, setEditingBook] = useState(null);
+  const [editingBook,setEditingBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const debounceSearch = useCallback(
@@ -78,20 +78,28 @@ const Books = () => {
         const categoryId = await getCategoryByName(newBook.categoryName);
 
         // Create a new book with the retrieved category ID
-        const bookToCreate = {
+        const bookToSave = {
           title: newBook.title,
           author: newBook.author,
           categoryId: categoryId,
           quantity: parseInt(newBook.quantity),
         };
 
-        console.log(bookToCreate);
+        console.log(bookToSave);
 
-        await createBook(bookToCreate);
-        loadBooks(); // Reload books after adding a new one
+        if (editingBook) {
+          // If editing, update the book
+          await updateBook(editingBook.id, bookToSave);
+          setEditingBook(null); // Reset editing state
+        } else {
+          // If adding, create a new book
+          await createBook(bookToSave);
+        }
+
+        loadBooks(); // Reload books after adding or editing
         handleCloseModal();
       } catch (error) {
-        console.error("Failed to add book:", error);
+        console.error("Failed to save book:", error);
       }
     }
   };
@@ -173,7 +181,10 @@ const Books = () => {
   }
 
   const handleEdit = (rowData) => {
-    console.log("Edit clicked for", rowData);
+
+    setEditingBook(rowData)
+    setIsModalOpen(true);
+     
   };
 
   const renderActions = (rowData) => (
@@ -261,8 +272,10 @@ const Books = () => {
           </div>
         </div>
       </div>
-
+   
+   
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        
         <Dynamicform
           heading="Add Book"
           fields={[
@@ -271,29 +284,36 @@ const Books = () => {
               type: "text",
               placeholder: "Book Title",
               required: true,
+             
             },
             {
               name: "author",
               type: "text",
               placeholder: "Author Name",
               required: true,
+            
             },
             {
               name: "categoryName",
               type: "text",
               placeholder: "Book Category",
               required: true,
+              
             },
             {
               name: "quantity",
               type: "number",
               placeholder: "Enter Quantity",
               required: true,
+              
             },
           ]}
+
           onSubmit={handleAddBook}
+          isEditMode={!!editingBook}
         />
       </Modal>
+      
     </>
   );
 };

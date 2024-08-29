@@ -8,7 +8,7 @@ const getAuthHeaders = () => {
   };
 };
 
-export const fetchCategories = async (page = 0, size = 7, searchTerm = "") => {
+export const fetchCategories = async (page = 0, size = 8, searchTerm = "") => {
   try {
     const response = await fetch(
       `${BASE_URL}/list?page=${page}&size=${size}&search=${encodeURIComponent(
@@ -18,7 +18,7 @@ export const fetchCategories = async (page = 0, size = 7, searchTerm = "") => {
         method: "GET",
         headers: {
           ...getAuthHeaders(),
-          "Cache-Control": "no-cache", // Prevents caching
+          
         },
       }
     );
@@ -72,25 +72,6 @@ export const deleteCategory = async (id) => {
   }
 };
 
-export const getCategoryById = async (id) => {
-  try {
-    const response = await fetch(`${BASE_URL}/${id}`, {
-      method: "GET",
-      headers: getAuthHeaders(),
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch category with category Id: ${response.statusText}`
-      );
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Failed to find Category by Id:", error);
-    throw error;
-  }
-};
 
 export const getCategoryByName = async (name) => {
   try {
@@ -109,5 +90,25 @@ export const getCategoryByName = async (name) => {
   } catch (error) {
     console.error("Failed to find category By Name:", error);
     throw error;
+  }
+};
+
+export const updateCategory = async (categoryId, updatedCategory) => {
+  try {
+    const response = await fetch(`${BASE_URL}/update/${categoryId}`, {
+      method: "PUT",
+      headers : getAuthHeaders(),
+      body: JSON.stringify(updatedCategory),
+    });
+    
+    
+    if (!response.ok) {
+      throw new Error("Failed to update category");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error updating category:", error);
+    throw error; // Rethrow the error to handle it in the component
   }
 };

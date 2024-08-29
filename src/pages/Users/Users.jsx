@@ -2,11 +2,11 @@ import  { useCallback, useEffect, useState } from 'react'
 
 import EditIcon from "../../assets/icons/EditIcom.png";
 import SearchIcon from "../../assets/icons/magnifying-glass.png";
-import Button from '../../components/Button/Button';
-import Table from '../../components/Table/Table';
+import Button from '../../components/Button/button';
+import Table from '../../components/Table/table';
 import LeftPageIcon from "../../assets/icons/LeftPage.png";
 import RightPageIcon from "../../assets/icons/Right-Page.png";
-import AdminHOC from '../../hoc/AdminHOC';
+import AdminHOC from '../../hoc/adminHOC';
 import Modal from '../../components/modal/modal';
 import Dynamicform from '../../components/forms/dynamicform';
 import DeleteIcon from "../../assets/icons/DeleteIcon.png";
