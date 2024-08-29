@@ -1,19 +1,22 @@
 import "./App.css";
-import Books from "./pages/Books/Books";
+import Books from "./pages/Books/books";
 
-import Categories from "./pages/Categories/Categories";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Login from "./pages/Login/Login";
-import Users from "./pages/Users/Users";
-import Issuances from "./pages/Issuances/Issuances";
+import Categories from "./pages/Categories/categories";
+import Dashboard from "./pages/Dashboard/dashboard";
+import Login from "./pages/Login/login";
+import Users from "./pages/Users/users";
+import Issuances from "./pages/Issuances/issuances";
 
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-
+import { Provider } from "react-redux";
+import store from "./redux/store";
 import "./style/style.css";
 import ProtectedRoute from "./routers/protectedRoute";
 
 function App() {
   return (
+
+    <Provider store={store}>
     <BrowserRouter>
       <div className="App">
         <Routes>
@@ -47,6 +50,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
+    </Provider> 
   );
 }
 

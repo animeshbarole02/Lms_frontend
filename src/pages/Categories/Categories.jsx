@@ -1,17 +1,17 @@
 import "./Categories.css";
 
 import { useCallback, useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
+import Button from "../../components/Button/button";
 import EditIcon from "../../assets/icons/EditIcom.png";
 import LeftPageIcon from "../../assets/icons/LeftPage.png";
 import RightPageIcon from "../../assets/icons/Right-Page.png";
 
 
 import DeleteIcon from "../../assets/icons/DeleteIcon.png";
-import Table from "../../components/Table/Table";
+import Table from "../../components/Table/table";
 
 import SearchIcon from "../../assets/icons/magnifying-glass.png";
-import AdminHOC from "../../hoc/AdminHOC";
+import AdminHOC from "../../hoc/adminHOC";
 import Modal from "../../components/modal/modal";
 import Dynamicform from "../../components/forms/dynamicform";
 import { fetchCategories, addCategory, deleteCategory, updateCategory } from "../../api/categoryApi";

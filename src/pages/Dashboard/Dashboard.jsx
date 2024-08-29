@@ -1,13 +1,13 @@
 import "./Dashboard.css";
-import Navbar from "../../components/Navbar/Navbar";
-import SideBar from "../../components/SideBar/SideBar";
-import Card from "../../components/Card/Card";
+import Navbar from "../../components/Navbar/navbar";
+import SideBar from "../../components/SideBar/sideBar";
+import Card from "../../components/Card/card";
 
 import Reading from "../../assets/icons/girl-reading-book-concept-free-vector.jpg";
 import Books from "../../assets/icons/Books.png";
 import TakeAway from "../../assets/icons/Takeaway.png";
 import TotalUsers from "../../assets/icons/TotalUsers.png";
-import AdminHOC from "../../hoc/AdminHOC";
+import AdminHOC from "../../hoc/adminHOC";
 const Dashboard = () => {
   const handleClick = (cardType) => {
     console.log(`${cardType} card clicked`);

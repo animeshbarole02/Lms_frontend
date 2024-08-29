@@ -1,4 +1,3 @@
-import { getCategoryById } from "./categoryApi";
 
 // booksApi.js
 const BASE_URL = "http://localhost:8080/api/v1/books";
@@ -30,23 +29,13 @@ export const fetchBooks = async (page = 0, size = 7, searchTerm = "") => {
       }
   
       const data = await response.json();
+
+      console.log(data);
   
-      // Transform books to include categoryName
-      const booksWithCategories = await Promise.all(
-        data.content.map(async (book) => {
-          const categoryDetails = await getCategoryById(book.categoryId);
-          return {
-            ...book,
-            categoryName: categoryDetails.name, // Assuming the category object has a 'name' field
-          };
-        })
-      );
+ 
   
       // Return the same structure as the original response but with transformed books
-      return {
-        ...data,
-        content: booksWithCategories, // Replacing the content with transformed books
-      };
+      return data;
       
     } catch (error) {
       console.error("Failed to fetch books:", error);
@@ -114,3 +103,4 @@ export const updateBook = async (id, updatedBook) => {
     throw error;
   }
 };
+

@@ -7,10 +7,10 @@
   }
   
   .action-button {
-    padding: 5px 10px; /* Adjust padding for buttons */
+    padding: 2px 5px; /* Adjust padding for buttons */
     border: 2px solid orange;
     cursor: pointer;
-    width: 8vw;
+    width: 6vw;
     border-radius: 5px; /* Rounded corners */
   }
   
