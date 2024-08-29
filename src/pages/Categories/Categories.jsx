@@ -14,7 +14,7 @@ import SearchIcon from "../../assets/icons/magnifying-glass.png";
 import AdminHOC from "../../hoc/AdminHOC";
 import Modal from "../../components/modal/modal";
 import Dynamicform from "../../components/forms/dynamicform";
-import { fetchCategories, addCategory, deleteCategory } from "../../api/categoryApi";
+import { fetchCategories, addCategory, deleteCategory, updateCategory } from "../../api/categoryApi";
 import Tooltip from "../../components/tooltip/toolTip";
 
  // Debounce utility function
@@ -32,12 +32,13 @@ const Categories = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
 
   // Debounce function to delay search execution
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
       loadCategories(newSearchTerm);
-    }, 300), // 300ms delay
+    }, 100), // 300ms delay
     []
   );
 
@@ -48,7 +49,9 @@ const Categories = () => {
   // Load categories from the backend with optional search term
   const loadCategories = async (search = "") => {
     try {
-      const data = await fetchCategories(currentPage, 7, search);
+      const data = await fetchCategories(currentPage, 10, search);
+
+     console.log(data);
       
       const startIndex = currentPage * data.size;
       const transformedCategories = data.content.map((category, index) => ({
@@ -68,14 +71,24 @@ const Categories = () => {
     debounceSearch(newSearchTerm); // Call the debounced search function
   };
 
-  const handleAddCategory = async (newCategory) => {
-    if (newCategory.name && newCategory.categoryDesc) {
+ 
+  const handleAddCategory = async (category) => {
+    if (category.name && category.categoryDesc) {
       try {
-        await addCategory(newCategory);
+        if (editingCategory) {
+          // If editing, update the category
+
+         
+          await updateCategory(editingCategory.id, category);
+          setEditingCategory(null); // Reset editing state
+        } else {
+          // If adding, add a new category
+          await addCategory(category);
+        }
         loadCategories();
         handleCloseModal();
       } catch (error) {
-        console.error("Failed to add category:", error);
+        console.error("Failed to save category:", error);
       }
     }
   };
@@ -104,16 +117,17 @@ const Categories = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setEditingCategory(null);
   };
 
   const columns = [
-    { header: "ID", accessor: "displayId", width: "0.5%" },
+    { header: "ID", accessor: "displayId", width: "0.25%" },
     { header: "Category Name", accessor: "name", width: "2%" },
     { header: "Category Description", accessor: "categoryDesc", width: "3%" },
     {
       header: "Actions",
       render: (rowData) => renderActions(rowData),
-      width: "0.5%",
+      width: "0.2%",
     },
   ];
 
@@ -141,10 +155,11 @@ const Categories = () => {
     </div>
   );
 
+  
   const handleEdit = (rowData) => {
-    console.log("Edit clicked for", rowData);
+    setEditingCategory(rowData); 
+    setIsModalOpen(true); 
   };
-
 
 
 
@@ -214,24 +229,26 @@ const Categories = () => {
       </div>
       {/* Modal Component */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <Dynamicform
-         heading="Add Category"
+      <Dynamicform
+          heading={editingCategory ? "Edit Category" : "Add Category"}
           fields={[
             {
               name: "name",
               type: "text",
               placeholder: "Category Name",
               required: true,
+              defaultValue: editingCategory?.name || "", // Pre-fill if editing
             },
             {
               name: "categoryDesc",
               type: "text",
               placeholder: "Category Description",
               required: true,
+              defaultValue: editingCategory?.categoryDesc || "", // Pre-fill if editing
             },
           ]}
           onSubmit={handleAddCategory}
-       
+          isEditMode={!!editingCategory}
         />
       </Modal>
     </>

@@ -30,7 +30,7 @@ const Dashboard = () => {
             src={Reading}
             heading="Currently Reading"
             count={120}
-            onClick={() => handleClick("Books")}
+          
           />
         </div>
 
@@ -39,7 +39,7 @@ const Dashboard = () => {
             src={TakeAway}
             heading="Reading at Home"
             count={120}
-            onClick={() => handleClick("Books")}
+            
           />
         </div>
         <div className="card-div">
@@ -47,7 +47,7 @@ const Dashboard = () => {
             src={TotalUsers}
             heading="Total Users"
             count={120}
-            onClick={() => handleClick("Books")}
+           
           />
         </div>
         <div className="card-div">
@@ -56,24 +56,16 @@ const Dashboard = () => {
             src={Books}
             heading="Total Books Available"
             count={120}
-            onClick={() => handleClick("Books")}
+          
           />
         </div>
+        
 
       </div>
       </div>
 
       <div className="rightdash-div">
-          <div className="heading">
-              <h2>Dashboard</h2>
-          </div>
-          <div className="content">
-
-          <span>Hi ,  Animesh </span>
-         
-         <p>~Keep track of the library activities.<br></br>~Manage users, Track book Issuances.<br></br>~Monitor overall Usage statistics in real-time.</p>
-        
-        </div>
+          
       </div>
       </div> 
     </div>
