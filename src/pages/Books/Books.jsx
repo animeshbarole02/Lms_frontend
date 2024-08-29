@@ -5,7 +5,7 @@ import SearchIcon from "../../assets/icons/magnifying-glass.png";
 import LeftPageIcon from "../../assets/icons/LeftPage.png";
 import RightPageIcon from "../../assets/icons/Right-Page.png";
 import EditIcon from "../../assets/icons/EditIcom.png";
-import AssignUser  from "../../assets/icons/UserAsign.png"
+
 import AdminHOC from "../../hoc/AdminHOC";
 import Modal from "../../components/modal/modal";
 import Dynamicform from "../../components/forms/dynamicform";
@@ -18,6 +18,8 @@ import {
 } from "../../api/bookApi";
 import { getCategoryByName } from "../../api/categoryApi";
 import Tooltip from "../../components/tooltip/toolTip";
+
+import "./Books.css";
 
 const debounce = (func, delay) => {
   let timer;
@@ -38,7 +40,7 @@ const Books = () => {
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
       loadBooks(newSearchTerm); // Fetch books whenever search term changes
-    }, 300), // 300ms delay
+    }, 1000), // 300ms delay
     []
   );
 
@@ -48,14 +50,15 @@ const Books = () => {
 
   const loadBooks = async (search = "") => {
     try {
-      const data = await fetchBooks(currentPage, 7, search);
+      const data = await fetchBooks(currentPage, 10, search);
 
-      console.log(data);
+     
 
       const startIndex = currentPage * data.size;
       const transformedBooks = data.content.map((book, index) => ({
         ...book,
         displayId: startIndex + index + 1,
+        categoryName: book.category.name,
       }));
       setBooks(transformedBooks);
       setTotalPages(data.totalPages);
@@ -132,12 +135,42 @@ const Books = () => {
     { header: "Author", accessor: "author", width: "10%" },
     { header: "Category", accessor: "categoryName", width: "5%" },
     { header: "Quantity", accessor: "quantity", width: "1%" },
+
+    {
+      header: "Options",
+      render: (rowData) => (
+        <div className="button-container">
+          <Button
+            text="Issue"
+            className="action-button issue-button"
+            onClick={() => handleIssue(rowData)}
+          />
+          <Button
+            text="History"
+            className="action-button history-button"
+            onClick={() => handleHistory(rowData)}
+          />
+        </div>
+      ),
+      width: "5%",
+    },
     {
       header: "Actions",
       render: (rowData) => renderActions(rowData),
       width: "1%",
     },
+    
   ];
+
+  const handleIssue = (rowData)=> {
+
+
+    
+  }
+
+  const handleHistory = (rowData)=>{
+
+  }
 
   const handleEdit = (rowData) => {
     console.log("Edit clicked for", rowData);
@@ -145,15 +178,7 @@ const Books = () => {
 
   const renderActions = (rowData) => (
     <div className="actionicons">
-      <Tooltip message="Assign">
-        <img
-          src={AssignUser}
-          alt="Assign"
-          className="action-icon"
-          onClick={""}
-        />
-      </Tooltip>
-
+ 
       <Tooltip message="Edit">
         <img
           src={EditIcon}

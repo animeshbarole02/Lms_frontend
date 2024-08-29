@@ -4,26 +4,34 @@ import { useNavigate } from "react-router-dom";
 import LibraryLogo from "../../assets/icons/WithoutBorder.png";
 import Button from "../../components/Button/Button";
 import "./Login.css";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess, setError } from "../../redux/authSlice";
 
 const Login = () => {
   const [isAdmin, setIsAdmin] = useState(true);
   const [usernameOrPhoneNumber, setUsernameOrPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  
+ 
+  const dispatch = useDispatch();
+  
 
   const navigate = useNavigate(); 
+
+  const error =  useSelector((state)=>state.auth.error);
+  
 
   const handleUserTypeChange = (type) => {
     setIsAdmin(type === "ADMIN");
 
     setUsernameOrPhoneNumber("");
     setPassword("");
-    setError("");
+    dispatch(setError(null));
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
+    dispatch(setError(null));
    
     const trimmedInput = usernameOrPhoneNumber.trim();
     const payload = {
@@ -37,12 +45,12 @@ const Login = () => {
     // Validate input based on selected role
     if (isAdmin) {
       if (!emailPattern.test(trimmedInput)) {
-        setError("Please enter a valid email address for admin login.");
+        dispatch(setError("Please enter a valid email address for admin login."));
         return;
       }
     } else {
       if (!phonePattern.test(trimmedInput)) {
-        setError("Please enter a valid phone number for user login.");
+        dispatch(setError("Please enter a valid phone number for user login."));
         return;
       }
     }
@@ -59,6 +67,8 @@ const Login = () => {
         console.log("Login SucccessFull", data);
         localStorage.setItem("token", data.jwtToken);
 
+        dispatch(loginSuccess({ user: data, jwtToken: data.jwtToken }));
+
         if (isAdmin) {
            navigate("/dashboard");
         } 
@@ -67,11 +77,11 @@ const Login = () => {
         }
 
       } else {
-        setError(data.message || "Login Failed , Please Try Again");
+        dispatch(setError(data.message || "Login Failed, Please Try Again"));
       }
     } catch (error) {
       console.error("Login error:", error);
-      setError("An error occurred. Please try again later.");
+      dispatch(setError("An error occurred. Please try again later."));
     }
 
 

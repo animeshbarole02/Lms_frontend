@@ -1,49 +1,61 @@
-import  { useState } from 'react'
-import SideBar from '../../components/SideBar/SideBar'
-import Navbar from '../../components/Navbar/Navbar'
+import  { useCallback, useEffect, useState } from 'react'
+
+import EditIcon from "../../assets/icons/EditIcom.png";
 import SearchIcon from "../../assets/icons/magnifying-glass.png";
 import Button from '../../components/Button/Button';
 import Table from '../../components/Table/Table';
 import LeftPageIcon from "../../assets/icons/LeftPage.png";
 import RightPageIcon from "../../assets/icons/Right-Page.png";
-import AssignBook from '../../assets/icons/BookBlack.png'
-import EditIcon from "../../assets/icons/EditIcom.png";
 import AdminHOC from '../../hoc/AdminHOC';
 import Modal from '../../components/modal/modal';
 import Dynamicform from '../../components/forms/dynamicform';
+import DeleteIcon from "../../assets/icons/DeleteIcon.png";
+import { fetchBooks } from '../../api/bookApi';
+import { addUser, deleteUser, fetchUsers } from '../../api/usersApi';
 
+
+
+const debounce = (func, delay) => {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
+};
 
 const Users = () => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [users, setUsers] = useState([
-      {
-        id: 1,
-        name: "John Doe",
-        email: "john.doe@example.com",
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        email: "jane.smith@example.com",
-      },
-      {
-        id: 3,
-        name: "Michael Brown",
-        email: "michael.brown@example.com",
-      },
-      {
-        id: 4,
-        name: "Emily Davis",
-        email: "emily.davis@example.com",
-      },
-      {
-        id: 5,
-        name: "David Wilson",
-        email: "david.wilson@example.com",
-      },
-    ]);
-
+    const [users, setUsers] = useState([]);
+    const [currentPage,setCurrentPage] = useState(0);
+    const [totalPages,setTotalPages] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const debounceSearch = useCallback(
+      debounce((newSearchTerm)=> {
+     loadUsers(newSearchTerm);
+      },1000),
+      []
+    );
+     
+    useEffect(() => {
+      loadUsers(searchTerm);
+    }, [currentPage]);
+
+    const loadUsers =  async (search = "")=> {
+      try {
+        const data = await fetchUsers(currentPage, 7, search);
+        
+        const startIndex = currentPage * data.size;
+        const transformedCategories = data.content.map((user, index) => ({
+          ...user,
+          displayId: startIndex + index + 1,
+        }));
+        setUsers(transformedCategories);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error("Failed to load Users:", error);
+      }
+    };
 
     const handleOpenModal = () => {
       setIsModalOpen(true);
@@ -53,52 +65,125 @@ const Users = () => {
       setIsModalOpen(false);
     };
   
-    const handleAddUser = (newUser) => {
-      if (newUser.name && newUser.email && newUser.phoneNumber && newUser.password) {
-        const newUserEntry = {
-          id: users.length + 1,
+    const handleAddUser = async (newUser) => {
+    
+       newUser = {
           ...newUser,
-        };
+          role:"USER",
+       }
+
+       console.log(newUser)
+
+      if (newUser.name && newUser.email && newUser.phoneNumber && newUser.password) {
+
+        
+        try {
+   
+         await addUser(newUser);
+         loadUsers();
+         handleCloseModal();
+
+        }catch(error) {
+          console.error("Failed to add User:", error);
+        }
   
-        setUsers([...users, newUserEntry]);
   
-        handleCloseModal();
       }
     };
+
+    const handleDelete = async (rowData) => {
+      const id =  rowData.id;
+
+      try {
+        await deleteUser(id);
+        setUsers(users.filter((user) => user.id !== id));
+      }catch(error) {
+        console.log("Failed to delete User",error);
+      }
+    };
+
+    const handleIssue = (rowData)=> {
+
+
+    
+    }
+  
+    const handleHistory = (rowData)=>{
+  
+    }
+
+
+    const handleSearchInputChange = (event) => {
+       const newSearchTerm = event.target.value;
+       setSearchTerm(newSearchTerm);
+       debounceSearch(newSearchTerm);
+    }
+
+    const handlePageChange = (direction) => {
+      if(direction ==="prev" && currentPage >0) {
+        setCurrentPage(currentPage -1);
+      }
+      else if(direction ==="next" && currentPage <totalPages -1)
+      {
+         setCurrentPage(currentPage +1);
+      }
+    }
   
       const columns = [
         { header: "ID", accessor: "id", width: "2%" },
         { header: "User Name", accessor: "name", width: "3%" },
         { header: "User Email", accessor: "email", width: "5%" },
+
+        {
+          header: "Options",
+          render: (rowData) => (
+            <div className="button-container">
+              <Button
+                text="Issue"
+                className="action-button issue-button"
+                onClick={() => handleIssue(rowData)}
+              />
+              <Button
+                text="History"
+                className="action-button history-button"
+                onClick={() => handleHistory(rowData)}
+              />
+            </div>
+          ),
+          width: "4%",
+        }, 
         {
             header: "Actions",
             render: (rowData) => renderActions(rowData),
             width: "1%",
           },
+
+          
+
+
       ];
+
+
 
       const handleEdit = (rowData) => {
        
         console.log("Edit clicked for", rowData);
       };
     
-      const handleDelete = (rowData) => {
-       
-        console.log("Delete clicked for", rowData);
-      };
+   
       const renderActions = (rowData) => (
         <div className="actionicons">
-          <img
-            src={AssignBook}
-            alt="Assign-Book"
-            className="action-icon"
-            onClick={() => handleDelete(rowData)}
-          />
           <img
             src={EditIcon}
             alt="Edit"
             className="action-icon"
             onClick={() => handleEdit(rowData)}
+          />
+          <img
+            src={DeleteIcon}
+            alt="Assign-Book"
+            className="action-icon"
+            onClick={() => handleDelete(rowData)}
           />
         </div>
       );
@@ -126,7 +211,7 @@ const Users = () => {
                     placeholder="Search Users..."
                     className="search-input"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={handleSearchInputChange}
                   />
                  </div>
                 </div>
@@ -145,13 +230,16 @@ const Users = () => {
         </div>
         <div className="pagination-div">
           <div className="left-pagination">
-            <img src={LeftPageIcon} alt="" />
+            <img src={LeftPageIcon} alt="" 
+             onClick={() => handlePageChange("prev")}/>
           </div>
           <div className="pagination-number">
-            <span>1/5</span>
+            <span>  {currentPage + 1}/{totalPages}</span>
           </div>
           <div className="right-pagination">
-            <img src={RightPageIcon} alt="" />
+            <img src={RightPageIcon} alt=""
+            onClick={() => handlePageChange("next")}
+             />
           </div>
         </div>
      </div>
