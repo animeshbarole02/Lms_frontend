@@ -38,7 +38,7 @@ const Categories = () => {
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
       loadCategories(newSearchTerm);
-    }, 100), // 300ms delay
+    }, 1000), // 300ms delay
     []
   );
 
@@ -112,6 +112,7 @@ const Categories = () => {
   };
 
   const handleOpenModal = () => {
+    
     setIsModalOpen(true);
   };
 
@@ -214,7 +215,7 @@ const Categories = () => {
                 />
               </div>
               <div className="pagination-number">
-              <span>{currentPage + 1}/{totalPages}</span>
+              <span>{currentPage + 1} of {totalPages}</span>
               </div>
               <div className="right-pagination">
                 <img
@@ -237,14 +238,14 @@ const Categories = () => {
               type: "text",
               placeholder: "Category Name",
               required: true,
-              defaultValue: editingCategory?.name || "", // Pre-fill if editing
+       // Pre-fill if editing
             },
             {
               name: "categoryDesc",
               type: "text",
               placeholder: "Category Description",
               required: true,
-              defaultValue: editingCategory?.categoryDesc || "", // Pre-fill if editing
+           // Pre-fill if editing
             },
           ]}
           onSubmit={handleAddCategory}

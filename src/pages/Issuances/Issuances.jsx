@@ -1,6 +1,5 @@
 import  { useCallback, useEffect, useState } from "react";
 import SearchIcon from "../../assets/icons/magnifying-glass.png";
-import Button from "../../components/Button/button";
 import Table from "../../components/Table/table";
 import Modal from "../../components/modal/modal";
 import Dynamicform from "../../components/forms/dynamicform";
@@ -9,7 +8,7 @@ import RightPageIcon from "../../assets/icons/Right-Page.png";
 import AdminHOC from "../../hoc/adminHOC";
 import {
   fetchIssuances,
-  createIssuance,
+ 
   deleteIssuance,
   updateIssuance,
 } from "../../api/issuancesApi";
@@ -38,7 +37,7 @@ const Issuances = () => {
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
       loadIssuances(newSearchTerm);
-    }, 300),
+    }, 1000),
     []
   );
 
@@ -50,6 +49,7 @@ const Issuances = () => {
   const loadIssuances = async (search = "") => {
     try {
       const data = await fetchIssuances(currentPage, 10, search);
+      console.log(data);
       const startIndex = currentPage * data.size;
       const transformedIssuances = data.content.map((issuance, index) => ({
         ...issuance,

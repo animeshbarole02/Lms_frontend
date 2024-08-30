@@ -128,7 +128,7 @@ const Login = () => {
                         ? "Enter your username"
                         : "Enter your mobile number"
                     }
-                    required
+                   
                   />
                 </div>
                 <div className="form-group">
@@ -140,7 +140,7 @@ const Login = () => {
                     value={password}
                     placeholder="Enter your password"
                     onChange={(e) => setPassword(e.target.value)}
-                    required
+                    
                   />
                 </div>
                 {error && <p className="error-message">{error}</p>}

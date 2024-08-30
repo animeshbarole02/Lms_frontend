@@ -1,50 +1,47 @@
-const BASE_URL = "http://localhost:8080/api/v1/issuances"; // Replace with your backend URL
+const BASE_URL = "http://localhost:8080/api/v1/issuances";// Replace with your backend URL
 
+
+const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    return {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+  };
 // Fetch issuances with pagination and optional search
-export const fetchIssuances = async (page, size, search = "") => {
+export const fetchIssuances = async (page=0, size=10, searchTerm = "") => {
   try {
-    const url = new URL(BASE_URL);
-    url.searchParams.append("page", page);
-    url.searchParams.append("size", size);
-    if (search) url.searchParams.append("search", search);
 
-    const response = await fetch(url);
+
+    const url = `${BASE_URL}/list?page=${page}&size=${size}&search=${searchTerm}`;  // Correct
+;
     
-    if (!response.ok) {
-      throw new Error(`Error fetching issuances: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data; // Assuming your backend returns a data object with content, size, and totalPages
-  } catch (error) {
-    console.error("Error fetching issuances:", error);
-    throw error; // Re-throw the error to handle it in the component
-  }
-};
-
-// Create a new issuance
-export const createIssuance = async (issuanceData) => {
-    try {
-      const response = await fetch(BASE_URL, {
-        method: "POST",
+    const response = await fetch(url, {
+        method: "GET",
         headers: {
-          "Content-Type": "application/json",
+          ...getAuthHeaders(), 
+        
         },
-        body: JSON.stringify(issuanceData),
       });
   
+
       if (!response.ok) {
-        throw new Error(`Error creating issuance: ${response.statusText}`);
+        throw new Error(`Error fetching issuances: HTTP status ${response.status}`);
       }
   
+     
       const data = await response.json();
+  
+
       return data;
     } catch (error) {
-      console.error("Error creating issuance:", error);
-      throw error;
+      console.error("Error fetching issuances:", error);
+      throw error; 
     }
   };
-  
+
+// Create a new issuance
+
 
 
 

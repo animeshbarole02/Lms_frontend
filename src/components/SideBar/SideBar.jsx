@@ -1,4 +1,4 @@
-import './SideBar.css';
+import './sideBar.css';
 
 import Dash from '../../assets/icons/Dashboard.png';
 import List from '../../assets/icons/List.png';

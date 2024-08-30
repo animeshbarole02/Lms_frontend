@@ -33,9 +33,11 @@
 
 
 .custom-table th {
-    background-color: #f39256; /* Header background */
-    color: #f9fbfc; /* Header text color */
+    background-color: #fba976; /* Header background */
+    color: #ffffff; /* Header text color */
     font-weight: bold;
+    
+
     text-transform: uppercase;
 
     

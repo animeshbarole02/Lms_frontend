@@ -34,7 +34,7 @@ const Books = () => {
   const [books, setBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [editingBook,setEditingBook] = useState(null);
+  const [editingBook, setEditingBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const debounceSearch = useCallback(
@@ -74,32 +74,30 @@ const Books = () => {
       newBook.categoryName &&
       newBook.quantity
     ) {
-      try {
-        const categoryId = await getCategoryByName(newBook.categoryName);
-
-        // Create a new book with the retrieved category ID
-        const bookToSave = {
+  
+      const categoryId = await getCategoryByName(newBook.categoryName);
+        const bookToCreate = {
           title: newBook.title,
           author: newBook.author,
           categoryId: categoryId,
           quantity: parseInt(newBook.quantity),
         };
-
-        console.log(bookToSave);
-
-        if (editingBook) {
-          // If editing, update the book
-          await updateBook(editingBook.id, bookToSave);
-          setEditingBook(null); // Reset editing state
-        } else {
-          // If adding, create a new book
-          await createBook(bookToSave);
-        }
-
-        loadBooks(); // Reload books after adding or editing
+    
+         try {
+          if(editingBook) {
+            await updateBook(editingBook.category.id, {...bookToCreate})
+            setEditingBook(null);
+          }else {
+            await createBook(bookToCreate);
+          }
+         
+   
+      
+     
+        loadBooks(); // Reload books after adding a new one
         handleCloseModal();
       } catch (error) {
-        console.error("Failed to save book:", error);
+        console.error("Failed to add book:", error);
       }
     }
   };
@@ -130,6 +128,7 @@ const Books = () => {
   };
 
   const handleOpenModal = () => {
+     setEditingBook(null);
     setIsModalOpen(true);
   };
 
@@ -182,20 +181,24 @@ const Books = () => {
 
   const handleEdit = (rowData) => {
 
+   
     setEditingBook(rowData)
     setIsModalOpen(true);
      
   };
 
   const renderActions = (rowData) => (
+   
     <div className="actionicons">
- 
+      
       <Tooltip message="Edit">
         <img
           src={EditIcon}
           alt="Edit"
           className="action-icon"
+          
           onClick={() => handleEdit(rowData)}
+          
         />
       </Tooltip>
 
@@ -208,6 +211,8 @@ const Books = () => {
         />
       </Tooltip>
     </div>
+
+  
   );
 
   return (
@@ -260,7 +265,7 @@ const Books = () => {
           </div>
           <div className="pagination-number">
             <span>
-              {currentPage + 1}/{totalPages}
+              {currentPage + 1} of {totalPages}
             </span>
           </div>
           <div className="right-pagination">
@@ -272,26 +277,24 @@ const Books = () => {
           </div>
         </div>
       </div>
-   
-   
+
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        
         <Dynamicform
-          heading="Add Book"
+           heading={editingBook ? "Edit Book" : "Add Book"}
           fields={[
             {
               name: "title",
               type: "text",
               placeholder: "Book Title",
               required: true,
-             
+            
             },
             {
               name: "author",
               type: "text",
               placeholder: "Author Name",
               required: true,
-            
+             
             },
             {
               name: "categoryName",
@@ -305,15 +308,12 @@ const Books = () => {
               type: "number",
               placeholder: "Enter Quantity",
               required: true,
-              
             },
           ]}
-
           onSubmit={handleAddBook}
           isEditMode={!!editingBook}
         />
       </Modal>
-      
     </>
   );
 };

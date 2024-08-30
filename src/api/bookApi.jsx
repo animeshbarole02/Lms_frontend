@@ -28,14 +28,12 @@ export const fetchBooks = async (page = 0, size = 7, searchTerm = "") => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
   
-      const data = await response.json();
-
-      console.log(data);
-  
+      const data = await response.json(); 
  
-  
       // Return the same structure as the original response but with transformed books
       return data;
+
+      
       
     } catch (error) {
       console.error("Failed to fetch books:", error);
@@ -82,11 +80,13 @@ export const deleteBook = async (id) => {
 
 // Function to update a book by ID
 export const updateBook = async (id, updatedBook) => {
+
+  console.log(updatedBook);
   try {
     const response = await fetch(`${BASE_URL}/update/${id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+     
         ...getAuthHeaders(),
       },
       body: JSON.stringify(updatedBook),
@@ -95,9 +95,7 @@ export const updateBook = async (id, updatedBook) => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
-    const data = await response.json();
-    return data;
+  
   } catch (error) {
     console.error("Failed to update book:", error);
     throw error;
