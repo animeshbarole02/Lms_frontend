@@ -29,11 +29,17 @@ const Login = () => {
         method: "GET",
         headers: { "Authorization": `Bearer ${token}` },
       });
-
+  
       if (response.ok) {
         const data = await response.json();
         dispatch(loginSuccess({ user: data, jwtToken: token }));
-        navigate(isAdmin ? "/dashboard" : "/"); // Redirect based on role if needed
+        if (data.role === 'ADMIN') {
+          navigate("/dashboard");
+        } else if (data.role === 'USER') {
+          navigate("/userHistory");
+        } else {
+          navigate("/");
+        }
       } else {
         dispatch(setError("Failed to fetch user information."));
       }
@@ -42,27 +48,29 @@ const Login = () => {
       dispatch(setError("An error occurred. Please try again later."));
     }
   };
+  
 
   const handleUserTypeChange = (type) => {
     setIsAdmin(type === "ADMIN");
-    setUsernameOrPhoneNumber("");
-    setPassword("");
+    setUsernameOrPhoneNumber(""); // Clears input on switch
+    setPassword(""); // Clears password on switch
     dispatch(setError(null));
   };
-
+  
   const handleLogin = async (e) => {
     e.preventDefault();
     dispatch(setError(null));
-   
+    
     const trimmedInput = usernameOrPhoneNumber.trim();
     const payload = {
       usernameOrPhoneNumber: trimmedInput,
       password: password.trim(),
     };
-
+  
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phonePattern = /^[0-9]{10}$/;
   
+    // Validate input based on selected role
     if (isAdmin && !emailPattern.test(trimmedInput)) {
       dispatch(setError("Please enter a valid email address for admin login."));
       return;
@@ -70,19 +78,29 @@ const Login = () => {
       dispatch(setError("Please enter a valid phone number for user login."));
       return;
     }
-
+  
+    // Submit the login request after validation
     try {
       const response = await fetch("http://localhost:8080/api/v1/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
+  
       const data = await response.json();
+  
       if (response.ok) {
         localStorage.setItem("token", data.jwtToken);
         dispatch(loginSuccess({ user: data, jwtToken: data.jwtToken }));
-        navigate(isAdmin ? "/dashboard" : "/"); // Redirect based on role if needed
+
+        console.log(data.role);
+        if (data.role === 'ROLE_ADMIN') {
+          navigate("/dashboard");
+        } else if (data.role === 'ROLE_USER') {
+          navigate("/userHistory");
+        } else {
+          navigate("/");
+        }
       } else {
         dispatch(setError(data.message || "Login Failed, Please Try Again"));
       }
@@ -91,6 +109,7 @@ const Login = () => {
       dispatch(setError("An error occurred. Please try again later."));
     }
   };
+  
 
   return (
     <div className="outline-div">

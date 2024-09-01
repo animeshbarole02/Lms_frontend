@@ -10,23 +10,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color:  #ff9288;
-  font-size: 15px;
+  color:  #cc3c2f;
+  font-size: 18px;
+  
   z-index: 1000;
   
 }
 
 .modal-content {
   background-color: #fff;
-  padding: 20px;
+  padding: 25px;
 
  
   
-  border-radius: 10px;
+  border-radius: 15px;
   width: 400px;
-  max-width: 80%;
+  max-width: 70%;
   position: relative;
-  border: 8px solid ;
+  border: 4px solid ;
 }
 
 .modal-close {
@@ -48,7 +49,9 @@
 
 .modal-form-heading {
     display: flex;
-    justify-content: center;
+    
+    
+    
 
 }
 
@@ -56,21 +59,22 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    
     margin-top: 5%;
     
 }
 
 .modal-form-input select {
   padding: 8px;
-  border: 2px solid;
-  font-weight: 700;
+  border: 1.5px solid;
+  font-weight: 500;
   width: 100%;
 }
 
 .modal-form-input input {
-    padding: 8px;
-    border: 2px solid;
-    font-weight: 700;
+    padding: 10px;
+    border: 1.5px solid;
+    font-weight: 500;
    
 }
 
@@ -78,9 +82,13 @@
     display: flex;
     justify-content: center;
     margin-top: 8%;
+   
 
 }
 
 .modal-form-btn {
-  width: 8vw;
+  width: 10vw;
+  
+  border: 2.5px solid #ff7e72;
+  background-color: #ffffff;
 }

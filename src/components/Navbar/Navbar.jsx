@@ -41,6 +41,10 @@ const Navbar = () => {
               onClick={handleLogout}
             />
           </div>
+
+          <div className="text">
+                <span>Logout</span>
+          </div>
           
         </div>
       </div>

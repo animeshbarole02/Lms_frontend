@@ -64,3 +64,14 @@ export const deleteIssuance = async (issuanceId) => {
     throw error;
   }
 };
+
+
+export const fetchIssuanceCount = async () => {
+  try {
+    const response = await get(`${BASE_URL}/count`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching issuance count:", error);
+    throw error;
+  }
+};

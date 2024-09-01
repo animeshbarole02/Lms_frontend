@@ -26,6 +26,15 @@ export const addUser = async (newUser) => {
   }
 };
 
+export const fetchUserCount = async () => {
+  try {
+    return await get("/api/v1/users/count");
+  } catch (error) {
+    console.error("Failed to fetch user count:", error);
+    throw error;
+  }
+};
+
 // Delete a user by ID
 export const deleteUser = async (id) => {
   try {

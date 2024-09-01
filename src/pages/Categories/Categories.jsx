@@ -74,6 +74,8 @@ const Categories = () => {
 
  
   const handleAddCategory = async (category) => {
+
+    console.log(category);
     if (category.name && category.categoryDesc) {
       try {
         if (editingCategory) {
@@ -219,7 +221,13 @@ const Categories = () => {
                 />
               </div>
               <div className="pagination-number">
-              <span>{currentPage + 1} of {totalPages}</span>
+              <span>
+                    {totalPages > 1
+                      ? `${currentPage + 1} of ${totalPages}`
+                      : totalPages === 1
+                      ? `1 of 1`
+                      : "No pages available"}
+                  </span>
               </div>
               <div className="right-pagination">
                 <img

@@ -14,6 +14,17 @@ export const fetchCategories = async (page = 0, size = 8, searchTerm = "") => {
   }
 };
 
+
+export const fetchCategoryCount= async () => {
+  try {
+    const count = await get(`${BASE_URL}/count`);
+    return count;
+  } catch (error) {
+    console.error("Failed to fetch category count:", error);
+    throw error; // Re-throw to handle in component
+  }
+};
+
 // Function to add a new category
 export const addCategory = async (newCategory) => {
   try {

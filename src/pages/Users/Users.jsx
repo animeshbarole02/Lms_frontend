@@ -179,7 +179,11 @@ const Users = () => {
 
       if (response === "Issuance already exists for this user and book.") {
         alert(response); // Display message from backend
-      } else {
+      }
+      else if (response==="No copies available for the selected book."){
+        alert(response);
+      }
+      else {
         alert("Issuance created successfully.");
       }
     } catch (error) {

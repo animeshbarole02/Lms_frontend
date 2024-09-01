@@ -89,6 +89,8 @@ const fetchCategories = async () => {
 
   const handleAddBook = async (newBook) => {
 
+    
+
     console.log(newBook);
 
     if (
@@ -112,16 +114,17 @@ const fetchCategories = async () => {
         console.log(bookToCreate);
          try {
           if(editingBook) {
-            await updateBook(editingBook.category.id, {...bookToCreate})
+            await updateBook(newBook.id, {...bookToCreate})
             setEditingBook(null);
           }else {
             await createBook(bookToCreate);
+            
           }
          
    
       
-     
-        loadBooks(); // Reload books after adding a new one
+          loadBooks();
+         // Reload books after adding a new one
         handleCloseModal();
       } catch (error) {
         console.error("Failed to add book:", error);
@@ -197,12 +200,18 @@ const fetchCategories = async () => {
        const response = await createIssuance(issuanceDetails);
 
        console.log(response);
+       
 
       if (response === "Issuance already exists for this user and book.") {
           alert(response);  // Display message from backend
-      } else {
+      } 
+      else if (response==="No copies available for the selected book."){
+             alert(response);
+      }
+      else {
           alert("Issuance created successfully.");
       }
+      loadBooks();
   } catch (error) {
       console.error("Failed to create issuance:", error);
       alert("Failed to create issuance.");
@@ -306,8 +315,14 @@ const fetchCategories = async () => {
           </div>
           <div className="pagination-number">
             <span>
-              {currentPage + 1} of {totalPages}
-            </span>
+            
+                    {totalPages > 1
+                      ? `${currentPage + 1} of ${totalPages}`
+                      : totalPages === 1
+                      ? `1 of 1`
+                      : "No pages available"}
+                  </span>
+            
           </div>
           <div className="right-pagination">
             <img
@@ -356,6 +371,8 @@ const fetchCategories = async () => {
           ]}
           onSubmit={handleAddBook}
           isEditMode={!!editingBook}
+          initialData={editingBook||{}}
+          
         />
       </Modal>
 

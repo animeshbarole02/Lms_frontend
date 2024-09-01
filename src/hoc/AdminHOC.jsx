@@ -1,22 +1,18 @@
-
-import SideBar from '../components/SideBar/sideBar'
-import Navbar from '../components/Navbar/navbar'
+import React from 'react';
+import SideBar from '../components/SideBar/sideBar';
+import Navbar from '../components/Navbar/navbar';
 
 const AdminHOC = (Component) => function HOC() {
   return (
     <div className='adminHOC-div'>
-
-        <Navbar/>
-        <SideBar />
-        
-
+      <Navbar />
+      {/* Ensure isAdmin is passed as true */}
+      <SideBar isAdmin={true} />
       <div className="hoc-area">
-
-             <Component/>
+        <Component />
       </div>  
-
     </div>
-  )
+  );
 }
 
-export default AdminHOC
+export default AdminHOC;

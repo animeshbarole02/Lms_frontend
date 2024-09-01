@@ -91,6 +91,43 @@ const Issuances = () => {
   
   };
 
+  const formatDateTime = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Ensure month is 2 digits
+    const day = String(d.getDate()).padStart(2, '0'); // Ensure day is 2 digits
+    const hours = String(d.getHours()).padStart(2, '0'); // Ensure hours are 2 digits
+    const minutes = String(d.getMinutes()).padStart(2, '0'); // Ensure minutes are 2 digits
+    const seconds = String(d.getSeconds()).padStart(2, '0'); // Ensure seconds are 2 digits
+  
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  };
+
+  const handleEditIssuance = async (issuance) => {
+    const formattedDate = formatDateTime(issuance.expectedReturn);
+    const updatedIssuance = {
+      ...issuance,
+      expectedReturn: formattedDate,
+    };
+
+    console.log(updatedIssuance);
+  
+    try {
+
+
+      await updateIssuance(updatedIssuance.id, updatedIssuance);
+
+     
+      // Handle the success, e.g., close modal, reload data, etc.
+      alert("Issuance updated successfully");
+      loadIssuances();
+      handleCloseModal();
+
+    } catch (error) {
+      console.error("Failed to update the issuance", error);
+    }
+  };
+
   const handlePageChange = (direction) => {
     if (direction === "prev" && currentPage > 0) {
       setCurrentPage(currentPage - 1);
@@ -114,18 +151,13 @@ const Issuances = () => {
     { header: "Book", accessor: "title", width: "8%" },
     { header: "Issue", accessor: "issuedAt", 
       
-      width: "10%",
+      width: "8%",
       render: (rowData) => formatDateOrTime(rowData.issuedAt, rowData.issuanceType)
      },
-     {header :"Expected Return",accessor:"expectedReturn", width:"10%",
+     {header :"Return",accessor:"expectedReturn", width:"8%",
       render: (rowData) => formatDateOrTime(rowData.expectedReturn, rowData.issuanceType)
      },
-    { header: "Return", accessor: "returnedAt", width: "10%" ,
-      render: (rowData) => {
-        if (!rowData.returnedAt) return ""; // If returnedAt is null, return an empty string
-        return formatDateOrTime(rowData.returnedAt, rowData.issuanceType); // Otherwise, format and display the date or time
-      }
-    }, 
+    
     { header: "Status", accessor: "status", width: "5%" },
     {header : "Type" , accessor :"issuanceType",width : "5%"},
     {
@@ -205,7 +237,13 @@ const Issuances = () => {
                 />
               </div>
               <div className="pagination-number">
-                <span>{currentPage + 1}/{totalPages}</span>
+              <span>
+                    {totalPages > 1
+                      ? `${currentPage + 1} of ${totalPages}`
+                      : totalPages === 1
+                      ? `1 of 1`
+                      : "No pages available"}
+                  </span>
               </div>
               <div className="right-pagination">
                 <img
@@ -219,6 +257,35 @@ const Issuances = () => {
         </div>
       </div>
       {/* Modal Component */}
+
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <Dynamicform 
+          
+          heading={editingIssuance ?"Edit Issuance":"Add Issuance"}
+          fields={[
+            {
+               name :"expectedReturn",
+               type:"datetime-local",
+               placeholder :"Return Time"
+
+              
+            },
+            {
+              name :"status",
+              type :"text",
+              placeholder:"Status"
+            },
+          ]}
+
+          onSubmit={handleEditIssuance}
+          isEditMode={!!editingIssuance}
+          initialData={editingIssuance}
+          
+        
+        />
+
+       
+      </Modal>
      
     </>
   );

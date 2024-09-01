@@ -1,5 +1,5 @@
 // booksApi.js
-import { get, post, put, del } from "../apiClient";
+import { get, post, put, del, patch } from "../apiClient";
 
 const BASE_URL = "/api/v1/books";
 
@@ -14,9 +14,21 @@ export const fetchBooks = async (page = 0, size = 7, searchTerm = "") => {
   }
 };
 
+
+export const fetchTotalBookCount = async () => {
+  try {
+    return await get(`${BASE_URL}/count`);
+  } catch (error) {
+    console.error("Failed to fetch total book count:", error);
+    throw error;
+  }
+};
+
 // Function to add a new book
 export const createBook = async (book) => {
   try {
+
+    console.log(book);
     
     return await post(`${BASE_URL}/create`, [book]);
   } catch (error) {
@@ -40,7 +52,7 @@ export const deleteBook = async (id) => {
 export const updateBook = async (id, updatedBook) => {
   try {
     // Using the put method from apiClient
-    return await put(`${BASE_URL}/update/${id}`, updatedBook);
+    return await patch(`${BASE_URL}/update/${id}`, updatedBook);
   } catch (error) {
     console.error("Failed to update book:", error);
     throw error; 

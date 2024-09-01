@@ -6,9 +6,10 @@ const Card = ({ heading, count, src,className }) => {
 
    
     <div className={`card-container ${className}`}>
+            <h3 className='card-heading'>{heading}</h3>
+            <p className='card-count'>{count}</p>
       <img src={src} alt="" />
-      <h3 className='card-heading'>{heading}</h3>
-      <p className='card-count'>{count}</p>
+
     </div>
    
   );
