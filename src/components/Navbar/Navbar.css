@@ -8,11 +8,13 @@
     
    
   
-   border-bottom:1.5px solid #ff7300 ;
-   background-color: #f9fbfc;
+   border-bottom:1.5px solid #ff7050 ;
+   background-color: #fff8f8;
    position: fixed;
    z-index: 10;
    width: 100%;
+   color :#cc3a3a;
+   
 
 }
 
@@ -34,22 +36,36 @@
 
 .logo-img img {
     height: 100%;
-    max-height: 12vh;
+    max-height: 8vh;
+    margin-top: 10%;
     width: auto;
+    
+    
    
 }
 
-.logo-text p {
-   color: white ;
-}
 
 .logo-text p {
-    font-size: 2.5vh; /* Adjust as needed */
-    font-weight: bold;
-    color: #333;
-    margin-right: 2px;
+    font-size: 4.0vh; /* Adjust as needed */
+    font-weight: 500;
+    
+    color: #e04736;
+   margin-left: 10%;
+   
     padding: 0;
     line-height: 1;
+    position: relative;
+}
+
+.logo-text p::after {
+    content: '';
+    display: block;
+    width: 100%; /* Full width underline */
+    height: 1px; /* Adjust thickness of the underline */
+    background-color: #e04736; /* Underline color */
+    position: absolute;
+    bottom: -2px; /* Adjust the position below the text */
+    left: 0; /* Align the underline with the text */
 }
 
 
@@ -62,7 +78,7 @@
     font-size: 25px;
     padding: 8px;
     font-weight: 900;
-    margin-top: 1%;
+    
     flex-grow: 1;  /* Adds some padding on the left and right for spacing */
 }
 
@@ -70,12 +86,32 @@
 
 
 .header .user-name {
-   
-    padding: 5px;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.header .user-name p {
+    position: relative;
+    font-size: 20px; /* Adjust as needed */
+    font-weight: normal;
+    color: #000; /* Adjust text color as needed */
+    margin: 0;
+    padding: 0;
+}
+
+.header .user-name p::after {
+    content: '';
+    display: block;
+    width: 100%; /* Adjust the width of the line */
+    height: 1px; /* Adjust the thickness of the line */
+    background-color: #000; /* Line color */
+    position: absolute;
+    bottom: -3px; /* Adjust the position below the text */
+     /* Center the line under the text */
+}
+
 
 .header .user-name img {
     height: 3vh;
@@ -97,14 +133,11 @@
      /* Pushes the button to the right side */
 }
 
-.logout-button .text {
-    font-size: 20px;
 
-}
 
 .logout-icon {
-    width: 2.5vw;
-    height: 5vh;
+    width: 3vw;
+    height: 6vh;
     cursor: pointer;
 }
 

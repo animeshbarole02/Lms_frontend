@@ -1,29 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import LibraryLogo from "../../assets/icons/WithoutBorder.png";
 import Button from "../../components/Button/button";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess, setError } from "../../redux/authSlice";
+import { loginSuccess, setAuthFromLocalStorage, setError } from "../../redux/authSlice";
 
 const Login = () => {
   const [isAdmin, setIsAdmin] = useState(true);
   const [usernameOrPhoneNumber, setUsernameOrPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   
- 
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
+  const error = useSelector((state) => state.auth.error);
 
-  const navigate = useNavigate(); 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(setAuthFromLocalStorage({ jwtToken: token }));
+      fetchUserInfo(token);
+    }
+  }, [dispatch]);
 
-  const error =  useSelector((state)=>state.auth.error);
-  
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/currentUser", {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        dispatch(loginSuccess({ user: data, jwtToken: token }));
+        navigate(isAdmin ? "/dashboard" : "/"); // Redirect based on role if needed
+      } else {
+        dispatch(setError("Failed to fetch user information."));
+      }
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+      dispatch(setError("An error occurred. Please try again later."));
+    }
+  };
 
   const handleUserTypeChange = (type) => {
     setIsAdmin(type === "ADMIN");
-
     setUsernameOrPhoneNumber("");
     setPassword("");
     dispatch(setError(null));
@@ -40,23 +61,18 @@ const Login = () => {
     };
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phonePattern = /^[0-9]{10}$/; // Adjust the pattern based on your requirements
+    const phonePattern = /^[0-9]{10}$/;
   
-    // Validate input based on selected role
-    if (isAdmin) {
-      if (!emailPattern.test(trimmedInput)) {
-        dispatch(setError("Please enter a valid email address for admin login."));
-        return;
-      }
-    } else {
-      if (!phonePattern.test(trimmedInput)) {
-        dispatch(setError("Please enter a valid phone number for user login."));
-        return;
-      }
+    if (isAdmin && !emailPattern.test(trimmedInput)) {
+      dispatch(setError("Please enter a valid email address for admin login."));
+      return;
+    } else if (!isAdmin && !phonePattern.test(trimmedInput)) {
+      dispatch(setError("Please enter a valid phone number for user login."));
+      return;
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/signin`, {
+      const response = await fetch("http://localhost:8080/api/v1/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -64,18 +80,9 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log("Login SucccessFull", data);
         localStorage.setItem("token", data.jwtToken);
-
         dispatch(loginSuccess({ user: data, jwtToken: data.jwtToken }));
-
-        if (isAdmin) {
-           navigate("/dashboard");
-        } 
-        else {
-          alert("User login successful. You are not redirected as this is a user account.");
-        }
-
+        navigate(isAdmin ? "/dashboard" : "/"); // Redirect based on role if needed
       } else {
         dispatch(setError(data.message || "Login Failed, Please Try Again"));
       }
@@ -83,9 +90,6 @@ const Login = () => {
       console.error("Login error:", error);
       dispatch(setError("An error occurred. Please try again later."));
     }
-
-
-
   };
 
   return (
@@ -96,7 +100,6 @@ const Login = () => {
             <div className="text">
               <h2>Log in</h2>
             </div>
-
             <div className="choose">
               <Button
                 text="Admin"
@@ -109,7 +112,6 @@ const Login = () => {
                 onClick={() => handleUserTypeChange("USER")}
               />
             </div>
-
             <div className="form">
               <form onSubmit={handleLogin}>
                 <div className="form-group">
@@ -121,14 +123,12 @@ const Login = () => {
                     id="username"
                     name="username"
                     value={usernameOrPhoneNumber}
-
                     onChange={(e) => setUsernameOrPhoneNumber(e.target.value)}
                     placeholder={
                       isAdmin
                         ? "Enter your username"
                         : "Enter your mobile number"
                     }
-                   
                   />
                 </div>
                 <div className="form-group">
@@ -140,7 +140,6 @@ const Login = () => {
                     value={password}
                     placeholder="Enter your password"
                     onChange={(e) => setPassword(e.target.value)}
-                    
                   />
                 </div>
                 {error && <p className="error-message">{error}</p>}
@@ -151,9 +150,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-
         <div className="vertical-line"></div>
-
         <div className="right-page">
           <div className="img-div">
             <div className="text">
@@ -164,7 +161,6 @@ const Login = () => {
                 your reading journey all in one place.{" "}
               </p>
             </div>
-
             <div className="icon">
               <img src={LibraryLogo} alt="Library Logo" />
             </div>

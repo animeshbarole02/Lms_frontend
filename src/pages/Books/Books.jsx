@@ -15,11 +15,13 @@ import {
   createBook,
   deleteBook,
   updateBook,
-} from "../../api/bookApi";
-import { getCategoryByName } from "../../api/categoryApi";
+} from "../../api/services/bookApi";
+import { fetchAllCategories, getCategoryByName } from "../../api/services/categoryApi";
 import Tooltip from "../../components/tooltip/toolTip";
 
 import "./Books.css";
+import IssuanceForm from "../../components/forms/issuanceform";
+import { createIssuance } from "../../api/services/issuancesApi";
 
 const debounce = (func, delay) => {
   let timer;
@@ -36,6 +38,12 @@ const Books = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [editingBook, setEditingBook] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [isIssuanceModalOpen, setIsIssuanceModalOpen] = useState(false);
+  const [selectedBook, setSelectedBook] = useState(null);
+
+ 
+
 
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
@@ -46,6 +54,7 @@ const Books = () => {
 
   useEffect(() => {
     loadBooks();
+    fetchCategories();
   }, [currentPage]);
 
   const loadBooks = async (search = "") => {
@@ -67,22 +76,40 @@ const Books = () => {
     }
   };
 
+const fetchCategories = async () => {
+    try {
+      const categoryList = await fetchAllCategories(); // Replace this with your API function to fetch categories
+      setCategories(categoryList);
+    } catch (error) {
+      console.error("Failed to load categories:", error);
+    }
+  };
+
+ 
+
   const handleAddBook = async (newBook) => {
+
+    console.log(newBook);
+
     if (
       newBook.title &&
       newBook.author &&
-      newBook.categoryName &&
+      newBook.categoryId &&
       newBook.quantity
     ) {
+
+      
   
-      const categoryId = await getCategoryByName(newBook.categoryName);
+    
         const bookToCreate = {
           title: newBook.title,
           author: newBook.author,
-          categoryId: categoryId,
+          categoryId : newBook.categoryId,
           quantity: parseInt(newBook.quantity),
         };
     
+
+        console.log(bookToCreate);
          try {
           if(editingBook) {
             await updateBook(editingBook.category.id, {...bookToCreate})
@@ -128,7 +155,7 @@ const Books = () => {
   };
 
   const handleOpenModal = () => {
-     setEditingBook(null);
+    setEditingBook(null);
     setIsModalOpen(true);
   };
 
@@ -141,7 +168,7 @@ const Books = () => {
     { header: "Title", accessor: "title", width: "10%" },
     { header: "Author", accessor: "author", width: "10%" },
     { header: "Category", accessor: "categoryName", width: "5%" },
-    { header: "Quantity", accessor: "quantity", width: "1%" },
+    { header: "Quantity", accessor: "quantity", width: "0%" },
 
     {
       header: "Options",
@@ -152,14 +179,9 @@ const Books = () => {
             className="action-button issue-button"
             onClick={() => handleIssue(rowData)}
           />
-          <Button
-            text="History"
-            className="action-button history-button"
-            onClick={() => handleHistory(rowData)}
-          />
         </div>
       ),
-      width: "5%",
+      width: "2%",
     },
     {
       header: "Actions",
@@ -169,15 +191,34 @@ const Books = () => {
     
   ];
 
+  const handleIssuanceSubmit = async (issuanceDetails) => {
+    // Call your API to submit issuance details
+    try {
+       const response = await createIssuance(issuanceDetails);
+
+       console.log(response);
+
+      if (response === "Issuance already exists for this user and book.") {
+          alert(response);  // Display message from backend
+      } else {
+          alert("Issuance created successfully.");
+      }
+  } catch (error) {
+      console.error("Failed to create issuance:", error);
+      alert("Failed to create issuance.");
+  }
+  };
+
   const handleIssue = (rowData)=> {
+
+    setSelectedBook(rowData);
+    setIsIssuanceModalOpen(true);
 
 
     
   }
 
-  const handleHistory = (rowData)=>{
 
-  }
 
   const handleEdit = (rowData) => {
 
@@ -297,11 +338,14 @@ const Books = () => {
              
             },
             {
-              name: "categoryName",
-              type: "text",
-              placeholder: "Book Category",
+              name: "categoryId", // Change to categoryId to match the dropdown selection
+              type: "select", // Use "select" type for a dropdown
+              placeholder: "Select Book Category",
               required: true,
-              
+              options: categories.map((category) => ({
+                value: category.id,
+                label: category.name,
+              })),
             },
             {
               name: "quantity",
@@ -314,6 +358,19 @@ const Books = () => {
           isEditMode={!!editingBook}
         />
       </Modal>
+
+
+      <Modal isOpen={isIssuanceModalOpen} onClose={() => setIsIssuanceModalOpen(false)}>
+        <IssuanceForm
+          onSubmit={handleIssuanceSubmit}
+          selectedBook={selectedBook}
+          onClose={() => setIsIssuanceModalOpen(false)}
+        />
+      </Modal>
+
+
+  
+
     </>
   );
 };

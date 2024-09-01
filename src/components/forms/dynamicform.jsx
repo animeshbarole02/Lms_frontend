@@ -1,52 +1,90 @@
-import  { useState } from 'react'
-import Button from '../Button/button';
+import { useState, useEffect } from "react";
+import Button from "../Button/button";
 
-const Dynamicform = ({fields,onSubmit ,heading ,isEditMode}) => {
+const Dynamicform = ({
+  fields,
+  onSubmit,
+  heading,
+  isEditMode,
+  initialData = {},
+}) => {
+  // Initialize formData with empty strings or initialData
+  const [formData, setFormData] = useState(() =>
+    fields.reduce((acc, field) => {
+      acc[field.name] = initialData[field.name] || ""; // Initialize with empty string or initialData
+      return acc;
+    }, {})
+  );
 
-    const [formData , setFormData] = useState({});
+  // Update formData whenever initialData changes
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      ...initialData, // Override with initialData if provided
+    }));
+  }, [initialData]);
 
-    const handleInputChange = (e) =>{
-        const {name ,value} =  e.target;
-        setFormData({...formData,[name]:value});
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
-    const handleSubmit = (e) =>{
-        e.preventDefault();
-        onSubmit(formData);
-        setFormData({});
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+    setFormData({}); // Reset form data after submission
+  };
+
   return (
     <div>
-           <form onSubmit={handleSubmit}>
-      <div className="modal-form-heading">
-        <h2>{heading}</h2>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="modal-form-heading">
+          <h2>{heading}</h2>
+        </div>
 
-      <div className="modal-form-input-div">
-        {fields.map((field) => (
-          <div key={field.name} className="modal-form-input">
-            <input
-              type={field.type}
-              placeholder={field.placeholder}
-              name={field.name}
-              value={formData[field.name] || ""}
-              onChange={handleInputChange}
-              required={field.required}
-            />
-          </div>
-        ))}
-      </div>
+        <div className="modal-form-input-div">
+          {fields.map((field) => (
+            <div key={field.name} className="modal-form-input">
+              {field.type === "select" ? (
+                <select
+                  name={field.name}
+                  value={formData[field.name] || ""}
+                  onChange={handleInputChange}
+                  required={field.required}
+                >
+                  <option value="" disabled>
+                    {field.placeholder}
+                  </option>
+                  {field.options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  name={field.name}
+                  value={formData[field.name] || ""}
+                  onChange={handleInputChange}
+                  required={field.required}
+                />
+              )}
+            </div>
+          ))}
+        </div>
 
-      <div className="modal-form-btn-div">
-        <Button type="submit"  text={isEditMode ? "Edit" : "Add"} className="modal-form-btn" />
-       
-      </div>
-    </form>
-
-
-
+        <div className="modal-form-btn-div">
+          <Button
+            type="submit"
+            text={isEditMode ? "Edit" : "Add"}
+            className="modal-form-btn"
+          />
+        </div>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default Dynamicform
+export default Dynamicform;

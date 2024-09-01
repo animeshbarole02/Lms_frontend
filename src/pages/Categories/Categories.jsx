@@ -14,8 +14,9 @@ import SearchIcon from "../../assets/icons/magnifying-glass.png";
 import AdminHOC from "../../hoc/adminHOC";
 import Modal from "../../components/modal/modal";
 import Dynamicform from "../../components/forms/dynamicform";
-import { fetchCategories, addCategory, deleteCategory, updateCategory } from "../../api/categoryApi";
+import { fetchCategories, addCategory, deleteCategory, updateCategory } from "../../api/services/categoryApi";
 import Tooltip from "../../components/tooltip/toolTip";
+import { retry } from "@reduxjs/toolkit/query";
 
  // Debounce utility function
 const debounce = (func, delay) => {
@@ -51,7 +52,7 @@ const Categories = () => {
     try {
       const data = await fetchCategories(currentPage, 10, search);
 
-     console.log(data);
+   
       
       const startIndex = currentPage * data.size;
       const transformedCategories = data.content.map((category, index) => ({
@@ -82,8 +83,11 @@ const Categories = () => {
           await updateCategory(editingCategory.id, category);
           setEditingCategory(null); // Reset editing state
         } else {
+
+          console.log(category);
           // If adding, add a new category
           await addCategory(category);
+         
         }
         loadCategories();
         handleCloseModal();
@@ -123,7 +127,7 @@ const Categories = () => {
 
   const columns = [
     { header: "ID", accessor: "displayId", width: "0.25%" },
-    { header: "Category Name", accessor: "name", width: "2%" },
+    { header: "Category Name", accessor: "name", width: "1%" },
     { header: "Category Description", accessor: "categoryDesc", width: "3%" },
     {
       header: "Actions",
@@ -250,6 +254,7 @@ const Categories = () => {
           ]}
           onSubmit={handleAddCategory}
           isEditMode={!!editingCategory}
+          initialData={editingCategory || {}}
         />
       </Modal>
     </>

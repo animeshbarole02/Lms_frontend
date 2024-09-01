@@ -1,6 +1,6 @@
 import Logo from "../../assets/icons/ReadingLogo.png";
 import User from "../../assets/icons/user.png";
-import LogoutSwtich from "../../assets/icons/LogoutSwitch.png";
+import LogoutSwtich from "../../assets/icons/LogoutSwitch2.png"
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className="user-name">
           <img src={User} alt=""></img>
 
-          <p>Welcome Animesh !</p>
+          <p>Hello Animesh !</p>
           <br></br>
         </div>
 

@@ -1,58 +1,50 @@
-.sideBar-div{
-
+.sideBar-div {
     width: 18vw;
     height: 100vh;
-
-    background-color: #f9fbfc;
-  
+    background-color: #fff8f8;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 4%;
     position: fixed;
-   
-    border-right: 1.5px solid  #ef8636;
+    border-right: 1.5px solid #ef8636;
     z-index: 1; 
-   
 }
 
 .dashboard-items-div {
     display: flex;
-    
     margin-top: 50%;
     flex-direction: column;
     gap: 20px;
     position: relative;
-   
     height: 70vh;
-
 }
 
-
-
 .item {
-    padding: 6px;
+    padding: 4px;
     width: 15vw;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color:  #f2a06d;
+    background-color: #ff7769; /* Default background color */
     color: white;
     text-decoration: none;
-  
+    transition: background-color 0.3s;
+}
+
+.item.selected {
+    background-color: #e04736; /* Background color when selected */
 }
 
 .item img {
-    height: 4vh;
-   
+    height: 5vh;
 }
 
 .item-text {
     width: 8vw;
-   
     font-weight: 700;
     display: flex;
     justify-content: center;

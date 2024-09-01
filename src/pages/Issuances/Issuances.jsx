@@ -11,11 +11,12 @@ import {
  
   deleteIssuance,
   updateIssuance,
-} from "../../api/issuancesApi";
+} from "../../api/services/issuancesApi";
 import Tooltip from "../../components/tooltip/toolTip";
 import EditIcon from "../../assets/icons/EditIcom.png";
 import DeleteIcon from "../../assets/icons/DeleteIcon.png";
 import "./Issuances.css"; // Make sure to create a corresponding CSS file for styling
+import { formatDateOrTime } from "../../utils/formateDateOrTime";
 
 const debounce = (func, delay) => {
   let timer;
@@ -54,7 +55,12 @@ const Issuances = () => {
       const transformedIssuances = data.content.map((issuance, index) => ({
         ...issuance,
         displayId: startIndex + index + 1,
+        name: issuance.user?.name || "Unknown", // Extract user name
+        title: issuance.book?.title || "Unknown", // Extract book title
+
       }));
+
+      console.log(transformedIssuances);
       setIssuances(transformedIssuances);
       setTotalPages(data.totalPages);
     } catch (error) {
@@ -68,31 +74,21 @@ const Issuances = () => {
     debounceSearch(newSearchTerm);
   };
 
-  const handleAddIssuance = async (issuance) => {
-    if (issuance.userId && issuance.bookId && issuance.issueDate) {
-      try {
-        if (editingIssuance) {
-          await updateIssuance(editingIssuance.id, issuance);
-          setEditingIssuance(null);
-        } else {
-          await createIssuance(issuance);
-        }
-        loadIssuances();
-        handleCloseModal();
-      } catch (error) {
-        console.error("Failed to save issuance:", error);
-      }
-    }
-  };
+  
 
   const handleDelete = async (rowData) => {
     const id = rowData.id;
+    console.log(id);
     try {
       await deleteIssuance(id);
+      
       setIssuances(issuances.filter((issuance) => issuance.id !== id));
+      return alert("Issuance Deleted Successfully");
     } catch (error) {
       console.error("Failed to delete the issuance", error);
     }
+
+  
   };
 
   const handlePageChange = (direction) => {
@@ -113,15 +109,29 @@ const Issuances = () => {
   };
 
   const columns = [
-    { header: "ID", accessor: "displayId", width: "10%" },
-    { header: "User ID", accessor: "userId", width: "15%" },
-    { header: "Book ID", accessor: "bookId", width: "15%" },
-    { header: "Issue Date", accessor: "issueDate", width: "20%" },
-    { header: "Return Date", accessor: "returnDate", width: "20%" },
+    { header: "Id", accessor: "displayId", width: "3%" },
+    { header: "User", accessor: "name", width: "8%" },
+    { header: "Book", accessor: "title", width: "8%" },
+    { header: "Issue", accessor: "issuedAt", 
+      
+      width: "10%",
+      render: (rowData) => formatDateOrTime(rowData.issuedAt, rowData.issuanceType)
+     },
+     {header :"Expected Return",accessor:"expectedReturn", width:"10%",
+      render: (rowData) => formatDateOrTime(rowData.expectedReturn, rowData.issuanceType)
+     },
+    { header: "Return", accessor: "returnedAt", width: "10%" ,
+      render: (rowData) => {
+        if (!rowData.returnedAt) return ""; // If returnedAt is null, return an empty string
+        return formatDateOrTime(rowData.returnedAt, rowData.issuanceType); // Otherwise, format and display the date or time
+      }
+    }, 
+    { header: "Status", accessor: "status", width: "5%" },
+    {header : "Type" , accessor :"issuanceType",width : "5%"},
     {
       header: "Actions",
       render: (rowData) => renderActions(rowData),
-      width: "20%",
+      width: "5%",
     },
   ];
 
@@ -209,42 +219,7 @@ const Issuances = () => {
         </div>
       </div>
       {/* Modal Component */}
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <Dynamicform
-          heading={editingIssuance ? "Edit Issuance" : "Add Issuance"}
-          fields={[
-            {
-              name: "userId",
-              type: "number",
-              placeholder: "User ID",
-              required: true,
-              defaultValue: editingIssuance?.userId || "",
-            },
-            {
-              name: "bookId",
-              type: "number",
-              placeholder: "Book ID",
-              required: true,
-              defaultValue: editingIssuance?.bookId || "",
-            },
-            {
-              name: "issueDate",
-              type: "date",
-              placeholder: "Issue Date",
-              required: true,
-              defaultValue: editingIssuance?.issueDate || "",
-            },
-            {
-              name: "returnDate",
-              type: "date",
-              placeholder: "Return Date",
-              defaultValue: editingIssuance?.returnDate || "",
-            },
-          ]}
-          onSubmit={handleAddIssuance}
-          isEditMode={!!editingIssuance}
-        />
-      </Modal>
+     
     </>
   );
 };

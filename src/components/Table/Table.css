@@ -18,10 +18,10 @@
 }
 
 .custom-table th {
-    padding: 8px;
+    padding: 5px;
 
     text-align: center; 
-    border: 1px solid #ffe9c2;
+    
 }
 .custom-table td {
   
@@ -33,12 +33,9 @@
 
 
 .custom-table th {
-    background-color: #fba976; /* Header background */
+    background-color: #ff7769; /* Header background */
     color: #ffffff; /* Header text color */
-    font-weight: bold;
-    
-
-    text-transform: uppercase;
+     text-transform: uppercase;
 
     
     
@@ -55,9 +52,10 @@
 
 .custom-table td {
     background-color:  #f9fbfc;;
-    color: #333; 
-    border-left: 1.5px solid orange;
-    border-bottom: 1.5px solid orange;/* Text color */
+    color: #000000; 
+    font-weight: 600;
+    
+    border-bottom: 1.5px solid #ff7769;
 }
 
 .custom-table tr td:first-child {
