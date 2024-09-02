@@ -1,7 +1,7 @@
-// Import centralized API methods
+
 import { get, post, del, patch } from "../apiClient";
 
-// Fetch users with pagination and search
+
 export const fetchUsers = async (page = 0, size = 7, searchTerm = "") => {
   try {
     return await get("/api/v1/users/list", {
@@ -15,7 +15,7 @@ export const fetchUsers = async (page = 0, size = 7, searchTerm = "") => {
   }
 };
 
-// Add a new user
+
 export const addUser = async (newUser) => {
   try {
     await post("/api/v1/users/register", newUser);
@@ -35,7 +35,7 @@ export const fetchUserCount = async () => {
   }
 };
 
-// Delete a user by ID
+
 export const deleteUser = async (id) => {
   try {
     await del(`/api/v1/users/delete/${id}`);
@@ -46,7 +46,7 @@ export const deleteUser = async (id) => {
   }
 };
 
-// Find user by mobile number
+
 export const findUserByMobile = async (number) => {
   try {
     return await get(`/api/v1/users/number/${number}`);
@@ -56,7 +56,6 @@ export const findUserByMobile = async (number) => {
   }
 };
 
-// Update user by ID
 export const updateUser = async (userId, updatedUser) => {
   try {
     return await patch(`/api/v1/users/update/${userId}`, updatedUser);

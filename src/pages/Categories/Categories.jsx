@@ -17,6 +17,7 @@ import Dynamicform from "../../components/forms/dynamicform";
 import { fetchCategories, addCategory, deleteCategory, updateCategory } from "../../api/services/categoryApi";
 import Tooltip from "../../components/tooltip/toolTip";
 import { retry } from "@reduxjs/toolkit/query";
+import ConfirmationModal from "../../components/modal/confirmationModal";
 
  // Debounce utility function
 const debounce = (func, delay) => {
@@ -34,12 +35,14 @@ const Categories = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState(null);
 
-  // Debounce function to delay search execution
+  
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
       loadCategories(newSearchTerm);
-    }, 1000), // 300ms delay
+    }, 1000), 
     []
   );
 
@@ -47,7 +50,7 @@ const Categories = () => {
     loadCategories(searchTerm);
   }, [currentPage]);
 
-  // Load categories from the backend with optional search term
+
   const loadCategories = async (search = "") => {
     try {
       const data = await fetchCategories(currentPage, 10, search);
@@ -69,7 +72,7 @@ const Categories = () => {
   const handleSearchInputChange = (event) => {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
-    debounceSearch(newSearchTerm); // Call the debounced search function
+    debounceSearch(newSearchTerm); 
   };
 
  
@@ -79,15 +82,15 @@ const Categories = () => {
     if (category.name && category.categoryDesc) {
       try {
         if (editingCategory) {
-          // If editing, update the category
+       
 
          
           await updateCategory(editingCategory.id, category);
-          setEditingCategory(null); // Reset editing state
+          setEditingCategory(null); 
         } else {
 
           console.log(category);
-          // If adding, add a new category
+        
           await addCategory(category);
          
         }
@@ -98,16 +101,33 @@ const Categories = () => {
       }
     }
   };
+  
 
-  const handleDelete = async (rowData) => {
-    const id = rowData.id;
-    try {
-      await deleteCategory(id);
-      setCategories(categories.filter((category) => category.id !== id));
-    } catch (error) {
-      console.error("Failed to delete the category", error);
+  const handleOpenConfirmModal = (rowData) => {
+    setCategoryToDelete(rowData);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (categoryToDelete) {
+      try {
+        await deleteCategory(categoryToDelete.id);
+        setCategories(categories.filter((category) => category.id !== categoryToDelete.id));
+        loadCategories();
+      } catch (error) {
+        console.error("Failed to delete the category", error);
+      }
+      setCategoryToDelete(null);
+      setIsConfirmModalOpen(false);
     }
   };
+
+  const handleCancelDelete = () => {
+    setCategoryToDelete(null);
+    setIsConfirmModalOpen(false);
+  };
+
+
 
   const handlePageChange = (direction) => {
     if (direction === "prev" && currentPage > 0) {
@@ -156,7 +176,7 @@ const Categories = () => {
         src={DeleteIcon}
         alt="Delete"
         className="action-icon"
-        onClick={() => handleDelete(rowData)}
+        onClick={() => handleOpenConfirmModal(rowData)}
       />
        </Tooltip>
     </div>
@@ -250,14 +270,14 @@ const Categories = () => {
               type: "text",
               placeholder: "Category Name",
               required: true,
-       // Pre-fill if editing
+      
             },
             {
               name: "categoryDesc",
               type: "text",
               placeholder: "Category Description",
               required: true,
-           // Pre-fill if editing
+          
             },
           ]}
           onSubmit={handleAddCategory}
@@ -265,6 +285,12 @@ const Categories = () => {
           initialData={editingCategory || {}}
         />
       </Modal>
+      <ConfirmationModal
+        isOpen={isConfirmModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleDelete}
+        message="Are you sure you want to delete this category?"
+      />
     </>
   );
 };

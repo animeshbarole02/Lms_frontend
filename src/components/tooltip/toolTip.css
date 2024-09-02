@@ -14,9 +14,9 @@
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    bottom: 100%; /* Position above the icon */
+    bottom: 100%; 
     
-    margin-left: -60px; /* Center align */
+    margin-left: -60px; 
     opacity: 0;
     transition: opacity 0.3s;
   }

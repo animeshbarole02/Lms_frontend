@@ -46,7 +46,7 @@ const UserIssuanceform = ({ onSubmit, selectedUser, onClose }) => {
     if (issuanceType === "Home" && returnDate) {
       returnedAt = formatDateTime(`${returnDate}T23:59:59`);
     } else if (issuanceType === "Library" && returnTime) {
-      const currentDate = new Date().toISOString().slice(0, 10); // Get the current date in YYYY-MM-DD format
+      const currentDate = new Date().toISOString().slice(0, 10); 
       returnedAt = formatDateTime(`${currentDate}T${returnTime}`);
     }
 

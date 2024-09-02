@@ -17,10 +17,9 @@ import {
   setAuthFromLocalStorage,
   loginSuccess,
   logout,
-} from "./redux/authSlice"; // Adjust imports as necessary
+} from "./redux/authSlice"; 
 
 
-// Other imports...
 
 function App() {
   const dispatch = useDispatch();
@@ -46,11 +45,11 @@ function App() {
         const data = await response.json();
         dispatch(loginSuccess({ user: data, jwtToken: token }));
       } else {
-        dispatch(logout()); // Clear auth state if token is invalid
+        dispatch(logout()); 
       }
     } catch (error) {
       console.error("Error fetching user info:", error);
-      dispatch(logout()); // Clear auth state on error
+      dispatch(logout()); 
     }
   };
 

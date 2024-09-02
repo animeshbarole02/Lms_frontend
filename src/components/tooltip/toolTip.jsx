@@ -1,6 +1,5 @@
 
-import './Tooltip.css'; // Import the CSS for styling the tooltip
-
+import './Tooltip.css'; 
 const Tooltip = ({ children, message }) => {
   return (
     <div className="tooltip-container">

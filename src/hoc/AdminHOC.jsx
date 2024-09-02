@@ -6,7 +6,7 @@ const AdminHOC = (Component) => function HOC() {
   return (
     <div className='adminHOC-div'>
       <Navbar />
-      {/* Ensure isAdmin is passed as true */}
+     
       <SideBar isAdmin={true} />
       <div className="hoc-area">
         <Component />

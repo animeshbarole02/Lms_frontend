@@ -27,14 +27,14 @@
   
   padding-left: 2%;
   padding-right:2%
-  /* Left align the body text */
+
 }
 
 
 
 .custom-table th {
-    background-color: #ff7769; /* Header background */
-    color: #ffffff; /* Header text color */
+    background-color: #ff7769; 
+    color: #ffffff; 
      text-transform: uppercase;
 
     
@@ -47,7 +47,7 @@
 
 .custom-table tr:hover {
 
-    background-color: #ffefe1; /* Hover effect */
+    background-color: #ffefe1;
 }
 
 .custom-table td {

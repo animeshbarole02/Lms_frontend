@@ -29,14 +29,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ff7769; /* Default background color */
+    background-color: #ff7769; 
     color: white;
     text-decoration: none;
     transition: background-color 0.3s;
 }
 
 .item.selected {
-    background-color: #e04736; /* Background color when selected */
+    background-color: #e04736; 
 }
 
 .item img {

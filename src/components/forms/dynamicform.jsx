@@ -8,19 +8,19 @@ const Dynamicform = ({
   isEditMode,
   initialData = {},
 }) => {
-  // Initialize formData with empty strings or initialData
+
   const [formData, setFormData] = useState(() =>
     fields.reduce((acc, field) => {
-      acc[field.name] = initialData[field.name] || ""; // Initialize with empty string or initialData
+      acc[field.name] = initialData[field.name] || ""; 
       return acc;
     }, {})
   );
 
-  // Update formData whenever initialData changes
+
   useEffect(() => {
     setFormData((prevData) => ({
       ...prevData,
-      ...initialData, // Override with initialData if provided
+      ...initialData, 
     }));
   }, [initialData]);
 
@@ -32,7 +32,7 @@ const Dynamicform = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
-    setFormData({}); // Reset form data after submission
+    setFormData({}); 
   };
 
   return (

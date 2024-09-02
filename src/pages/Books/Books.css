@@ -1,30 +1,29 @@
-/* styles.css or a specific CSS file */
+
 .button-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px; /* Adjust spacing between buttons */
+    gap: 10px; 
   }
   
   .action-button {
-    padding: 2px 4px; /* Adjust padding for buttons */
+    padding: 2px 4px; 
     border: 1.5px solid #e04736;;
     cursor: pointer;
     width: 5vw;
-    border-radius: 5px; /* Rounded corners */
+    border-radius: 5px;
   }
   
   .issue-button {
-    background-color: #ffffff; /* Example color for Issue button */
+    background-color: #ffffff; 
     color: rgb(0, 0, 0);
   }
   
   .history-button {
-    background-color: #ffffff; /* Example color for History button */
+    background-color: #ffffff;
     color: rgb(0, 0, 0);
   }
   
-  /* Additional hover and active state styles */
   .action-button:hover {
     opacity: 0.8;
   }

@@ -15,7 +15,7 @@ import {
 import Tooltip from "../../components/tooltip/toolTip";
 import EditIcon from "../../assets/icons/EditIcom.png";
 import DeleteIcon from "../../assets/icons/DeleteIcon.png";
-import "./Issuances.css"; // Make sure to create a corresponding CSS file for styling
+import "./Issuances.css"; 
 import { formatDateOrTime } from "../../utils/formateDateOrTime";
 
 const debounce = (func, delay) => {
@@ -34,7 +34,6 @@ const Issuances = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIssuance, setEditingIssuance] = useState(null);
 
-  // Debounce function to delay search execution
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
       loadIssuances(newSearchTerm);
@@ -46,7 +45,7 @@ const Issuances = () => {
     loadIssuances(searchTerm);
   }, [currentPage]);
 
-  // Load issuances from the backend with optional search term
+  
   const loadIssuances = async (search = "") => {
     try {
       const data = await fetchIssuances(currentPage, 10, search);
@@ -55,8 +54,8 @@ const Issuances = () => {
       const transformedIssuances = data.content.map((issuance, index) => ({
         ...issuance,
         displayId: startIndex + index + 1,
-        name: issuance.user?.name || "Unknown", // Extract user name
-        title: issuance.book?.title || "Unknown", // Extract book title
+        name: issuance.user?.name || "Unknown", 
+        title: issuance.book?.title || "Unknown", 
 
       }));
 
@@ -94,11 +93,11 @@ const Issuances = () => {
   const formatDateTime = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0'); // Ensure month is 2 digits
-    const day = String(d.getDate()).padStart(2, '0'); // Ensure day is 2 digits
-    const hours = String(d.getHours()).padStart(2, '0'); // Ensure hours are 2 digits
-    const minutes = String(d.getMinutes()).padStart(2, '0'); // Ensure minutes are 2 digits
-    const seconds = String(d.getSeconds()).padStart(2, '0'); // Ensure seconds are 2 digits
+    const month = String(d.getMonth() + 1).padStart(2, '0'); 
+    const day = String(d.getDate()).padStart(2, '0'); 
+    const hours = String(d.getHours()).padStart(2, '0'); 
+    const minutes = String(d.getMinutes()).padStart(2, '0'); 
+    const seconds = String(d.getSeconds()).padStart(2, '0');
   
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   };
@@ -118,7 +117,6 @@ const Issuances = () => {
       await updateIssuance(updatedIssuance.id, updatedIssuance);
 
      
-      // Handle the success, e.g., close modal, reload data, etc.
       alert("Issuance updated successfully");
       loadIssuances();
       handleCloseModal();

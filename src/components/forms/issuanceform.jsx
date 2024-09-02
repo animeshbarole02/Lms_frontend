@@ -4,7 +4,7 @@ import { findUserByMobile } from "../../api/services/usersApi";
 import Button from "../Button/button";
 import { formatDateTime } from "../../utils/formateDateOrTime";
 
-// Utility function to format date and time to 'YYYY-MM-DDTHH:mm:ss'
+
 
 
 const IssuanceForm = ({ onSubmit, selectedBook, onClose }) => {
@@ -13,19 +13,19 @@ const IssuanceForm = ({ onSubmit, selectedBook, onClose }) => {
   const [issuanceType, setIssuanceType] = useState("Home");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
-  const [issuedAt] = useState(formatDateTime(new Date())); // Use formatted date
+  const [issuedAt] = useState(formatDateTime(new Date())); 
   const [expectedReturn, setExpectedReturn] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const fetchUserDetails = async (mobileNumber) => {
     try {
       const userDetails = await findUserByMobile(mobileNumber);
-      setUserId(userDetails.id); // Update userId state with retrieved user ID
-      setErrorMessage(""); // Clear any previous error messages
+      setUserId(userDetails.id);
+      setErrorMessage(""); 
     } catch (error) {
       console.error("Failed to fetch user details:", error);
-      setUserId(null); // Clear userId if not found
-      setErrorMessage("User not found. Please register first."); // Set error message
+      setUserId(null); 
+      setErrorMessage("User not found. Please register first.");
     }
   };
 
@@ -34,11 +34,11 @@ const IssuanceForm = ({ onSubmit, selectedBook, onClose }) => {
     setUserMobileNumber(mobileNumber);
 
     if (mobileNumber.length === 10) {
-      // Check if mobile number is valid length
-      fetchUserDetails(mobileNumber); // Fetch user details if valid
+
+      fetchUserDetails(mobileNumber); 
     } else {
-      setUserId(null); // Clear userId if mobile number is not valid
-      setErrorMessage(""); // Clear error message if input length is invalid
+      setUserId(null); 
+      setErrorMessage("");
     }
   };
 
@@ -52,24 +52,24 @@ const IssuanceForm = ({ onSubmit, selectedBook, onClose }) => {
 
     let returnedAt = null;
     if (issuanceType === "Home" && returnDate) {
-      returnedAt = formatDateTime(`${returnDate}T23:59:59`); // Format date for home issuance
+      returnedAt = formatDateTime(`${returnDate}T23:59:59`); 
     } else if (issuanceType === "Library" && returnTime) {
-      const currentDate = new Date().toISOString().slice(0, 10); // Get the current date in YYYY-MM-DD format
-      returnedAt = formatDateTime(`${currentDate}T${returnTime}`); // Format time for library issuance
+      const currentDate = new Date().toISOString().slice(0, 10); 
+      returnedAt = formatDateTime(`${currentDate}T${returnTime}`); 
     }
 
     const issuanceDetails = {
-      userId, // Assuming you have userId from somewhere
+      userId, 
       bookId: selectedBook.id,
       issuedAt,
       returnedAt,
       expectedReturn: formatDateTime(expectedReturn),
-      status: "Issued", // Set the status according to your logic
+      status: "Issued", 
       issuanceType,
     };
 
     onSubmit(issuanceDetails);
-    onClose(); // Close the modal after submission
+    onClose(); 
   };
 
   return (

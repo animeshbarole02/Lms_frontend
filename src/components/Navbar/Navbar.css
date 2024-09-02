@@ -104,12 +104,20 @@
 .header .user-name p::after {
     content: '';
     display: block;
-    width: 100%; /* Adjust the width of the line */
-    height: 1px; /* Adjust the thickness of the line */
-    background-color: #000; /* Line color */
+    width: 100%; 
+    height: 1px; 
+    background-color: #000; 
     position: absolute;
-    bottom: -3px; /* Adjust the position below the text */
-     /* Center the line under the text */
+    bottom: -3px; 
+}
+
+.header .mid-heading {
+    margin-left: 10%;
+    width: 20vw;
+    display: flex;
+    
+    justify-content: space-around;
+    
 }
 
 
@@ -121,9 +129,9 @@
 }
 
 
-/* Logout Button Section */
+
 .header .logout-button {
-    margin-right: 4%; /* Margin to the right side for spacing */
+    margin-right: 4%; 
     margin-left: auto;
 
     display: flex;
@@ -132,7 +140,7 @@
     justify-content: center;
     align-items: center;
     
-     /* Pushes the button to the right side */
+     
 }
 
 .header .logout-button span {
@@ -148,10 +156,9 @@
     cursor: pointer;
 }
 
-.
 
 .header .logout-button button:hover {
-    background-color: #ffbb70; /* Lighter shade on hover */
+    background-color: #ffbb70; 
 }
 
 

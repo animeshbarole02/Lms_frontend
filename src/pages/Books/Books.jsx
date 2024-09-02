@@ -47,8 +47,8 @@ const Books = () => {
 
   const debounceSearch = useCallback(
     debounce((newSearchTerm) => {
-      loadBooks(newSearchTerm); // Fetch books whenever search term changes
-    }, 1000), // 300ms delay
+      loadBooks(newSearchTerm);
+    }, 1000), 
     []
   );
 
@@ -78,7 +78,7 @@ const Books = () => {
 
 const fetchCategories = async () => {
     try {
-      const categoryList = await fetchAllCategories(); // Replace this with your API function to fetch categories
+      const categoryList = await fetchAllCategories(); 
       setCategories(categoryList);
     } catch (error) {
       console.error("Failed to load categories:", error);
@@ -124,7 +124,7 @@ const fetchCategories = async () => {
    
       
           loadBooks();
-         // Reload books after adding a new one
+       
         handleCloseModal();
       } catch (error) {
         console.error("Failed to add book:", error);
@@ -146,7 +146,7 @@ const fetchCategories = async () => {
   const handleSearchInputChange = (event) => {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
-    debounceSearch(newSearchTerm); // Call the debounced search function
+    debounceSearch(newSearchTerm); 
   };
 
   const handlePageChange = (direction) => {
@@ -195,7 +195,7 @@ const fetchCategories = async () => {
   ];
 
   const handleIssuanceSubmit = async (issuanceDetails) => {
-    // Call your API to submit issuance details
+   
     try {
        const response = await createIssuance(issuanceDetails);
 
@@ -203,7 +203,7 @@ const fetchCategories = async () => {
        
 
       if (response === "Issuance already exists for this user and book.") {
-          alert(response);  // Display message from backend
+          alert(response); 
       } 
       else if (response==="No copies available for the selected book."){
              alert(response);
@@ -353,8 +353,8 @@ const fetchCategories = async () => {
              
             },
             {
-              name: "categoryId", // Change to categoryId to match the dropdown selection
-              type: "select", // Use "select" type for a dropdown
+              name: "categoryId",
+              type: "select", 
               placeholder: "Select Book Category",
               required: true,
               options: categories.map((category) => ({

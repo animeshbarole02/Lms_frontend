@@ -1,7 +1,6 @@
-// Base URL for API requests
-const BASE_URL = "http://localhost:8080"; // Adjust if needed
 
-// Function to get authorization headers
+const BASE_URL = "http://localhost:8080"; 
+
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
   return {
@@ -10,10 +9,10 @@ const getAuthHeaders = () => {
   };
 };
 
-// Centralized function to handle HTTP responses
+
 const handleResponse = async (response) => {
   if (!response.ok) {
-    const errorText = await response.text(); // Get error text for better debugging
+    const errorText = await response.text(); 
     throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}. ${errorText}`);
   }
 
@@ -22,10 +21,10 @@ const handleResponse = async (response) => {
     return response.json();
   }
 
-  return response.text(); // Handle non-JSON responses
+  return response.text(); 
 };
 
-// Function to make a GET request
+
 export const get = async (url, params = {}) => {
   const queryString = new URLSearchParams(params).toString();
   const response = await fetch(`${BASE_URL}${url}?${queryString}`, {
@@ -36,7 +35,7 @@ export const get = async (url, params = {}) => {
   return handleResponse(response);
 };
 
-// Function to make a POST request
+
 export const post = async (url, body = {}) => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "POST",
@@ -47,7 +46,7 @@ export const post = async (url, body = {}) => {
   return handleResponse(response);
 };
 
-// Function to make a PUT request
+
 export const put = async (url, body = {}) => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "PUT",
@@ -58,7 +57,7 @@ export const put = async (url, body = {}) => {
   return handleResponse(response);
 };
 
-// Function to make a PATCH request
+
 export const patch = async (url, body = {}) => {
     const response = await fetch(`${BASE_URL}${url}`, {
       method: "PATCH",
@@ -69,7 +68,7 @@ export const patch = async (url, body = {}) => {
     return handleResponse(response);
   };
 
-// Function to make a DELETE request
+
 export const del = async (url) => {
   const response = await fetch(`${BASE_URL}${url}`, {
     method: "DELETE",

@@ -31,10 +31,10 @@
 }
 
 .vertical-line {
-    width: 1.65px; /* Thickness of the line */
-    background-color: #a9474763; /* Light gray color similar to the design */
+    width: 1.65px; 
+    background-color: #a9474763; 
     height: 80%;
-    margin: auto 20px; /* Space around the line */
+    margin: auto 20px; 
 }
 
 .choose {
@@ -124,22 +124,22 @@ input {
     width: 24vw;
     padding: 0.8rem;
     margin: 25px 0px 10px 0px;
-    background-color:  #d6670c; /* Dark orange background */
-    color: #ffffff; /* White text for good contrast */
-    border: none; /* No border for a clean look */
-    border-radius: 5px; /* Rounded corners */
-    font-weight: 600; /* Slightly bold text */
-    font-size: 16px; /* Moderate font size */
+    background-color:  #d6670c; 
+    color: #ffffff;
+    border: none; 
+    border-radius: 5px; 
+    font-weight: 600;
+    font-size: 16px; 
     cursor: pointer;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
 }
 
 /* Hover effect */
 .login-btn:hover {
-    background-color: #C63D2F; /* Darker red-orange on hover */
+    background-color: #C63D2F; 
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15); 
-     ;/* Enhanced shadow on hover */
+     
 }
 
 
@@ -154,10 +154,7 @@ input {
     justify-content: center;
     margin-top: -4%;
     
-    ; /* Add padding for better spacing */
-   /* Light gray background for contrast */
-     /* Rounded corners */
-    /* Soft shadow for depth */
+    ; 
 }
 
 .img-div { 
@@ -166,34 +163,32 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-     /* Light gray border */
-     /* Match border radius for consistency */
-    background-color: white; /* White background inside the box */
-    padding: 20px; /* Add padding inside the box */
-    /* Subtle shadow inside the box */
+  
+    background-color: white; 
+    padding: 20px;
 }
 
 .img-div .text {
-    margin: 20px 0px 20px 0px; /* Even spacing */
-    text-align: center; /* Center align text */
+    margin: 20px 0px 20px 0px;
+    text-align: center;
 }
 
 .img-div .text h2 {
      
-    font-size: 40px; /* Larger heading */
+    font-size: 40px; 
     color: #C63D2F;
 }
 
 .img-div .text p {
-    font-size: 16px; /* Regular size for paragraph */
-    color:#f87171cc; /* Slightly lighter color for paragraph text */
+    font-size: 16px; 
+    color:#f87171cc; 
     margin-top: 10px;
     width: 90%;
     font-weight: 900;
     padding-left: 10%;
     text-align: center;
-    margin-bottom: 10px; /* Space between heading and paragraph */
-    line-height: 1.5; /* Better readability with line height */
+    margin-bottom: 10px; 
+    line-height: 1.5; 
 }
 
 .icon {
@@ -203,8 +198,7 @@ input {
 .icon img {
     height: 60vh;
     
-     /* Adjusted height to fit better */
-    /* Shadow for the image */
+
     
 }
 

@@ -3,10 +3,13 @@ import User from "../../assets/icons/user.png";
 import LogoutSwtich from "../../assets/icons/LogoutSwitch2.png"
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
 
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.auth.user);
   const handleLogout = () => {
     localStorage.removeItem("token");
      navigate("/");
@@ -28,8 +31,15 @@ const Navbar = () => {
         <div className="user-name">
           <img src={User} alt=""></img>
 
-          <p>Hello Animesh !</p>
+          <p>Hello {user?.name || "Guest"}!</p> 
           <br></br>
+        </div>
+
+
+        <div className="mid-heading">
+          <span>Read...</span>
+          <span>Learn...</span>
+          <span>Grow...</span>
         </div>
 
         <div className="logout-button">
@@ -43,7 +53,7 @@ const Navbar = () => {
           </div>
 
           <div className="text">
-                <span>Logout</span>
+                <span>logout</span>
           </div>
           
         </div>

@@ -89,19 +89,19 @@ const Users = () => {
 
     try {
       if (isEditMode && editUser) {
-        // Update user if in edit mode
+       
 
         console.log(editUser.id, newUser);
         const responseMessage = await updateUser(editUser.id, newUser);
         alert(responseMessage);
       } else {
-        // Add new user
+      
         await addUser(newUser);
         alert("User added successfully.");
       }
 
-      loadUsers(); // Reload user list after adding/updating
-      handleCloseModal(); // Close modal after operation
+      loadUsers();
+      handleCloseModal();
     } catch (error) {
       console.error("Failed to save User:", error);
       alert("Failed to save User. Please try again.");
@@ -144,7 +144,7 @@ const Users = () => {
     { header: "ID", accessor: "id", width: "2%" },
     { header: "User Name", accessor: "name", width: "3%" },
     { header: "User Email", accessor: "email", width: "5%" },
-    { header: "Phone Number", accessor: "phoneNumber", width: "4%" }, // New column for phone number
+    { header: "Phone Number", accessor: "phoneNumber", width: "4%" }, 
     {
       header: "Options",
       render: (rowData) => (
@@ -171,14 +171,14 @@ const Users = () => {
   ];
 
   const handleIssuanceSubmit = async (issuanceDetails) => {
-    // Call your API to submit issuance details
+ 
     try {
       const response = await createIssuance(issuanceDetails);
 
       console.log(response);
 
       if (response === "Issuance already exists for this user and book.") {
-        alert(response); // Display message from backend
+        alert(response);
       }
       else if (response==="No copies available for the selected book."){
         alert(response);
@@ -303,7 +303,7 @@ const Users = () => {
           ]}
           onSubmit={handleAddUser}
           isEditMode={isEditMode}
-          initialData={editUser || {}} // Pre-fill form with current user data when editing
+          initialData={editUser || {}} 
         />
       </Modal>
 

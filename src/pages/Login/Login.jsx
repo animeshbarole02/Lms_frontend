@@ -52,8 +52,8 @@ const Login = () => {
 
   const handleUserTypeChange = (type) => {
     setIsAdmin(type === "ADMIN");
-    setUsernameOrPhoneNumber(""); // Clears input on switch
-    setPassword(""); // Clears password on switch
+    setUsernameOrPhoneNumber(""); 
+    setPassword(""); 
     dispatch(setError(null));
   };
   
@@ -79,7 +79,7 @@ const Login = () => {
       return;
     }
   
-    // Submit the login request after validation
+
     try {
       const response = await fetch("http://localhost:8080/api/v1/signin", {
         method: "POST",

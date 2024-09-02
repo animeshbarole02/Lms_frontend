@@ -26,7 +26,7 @@ const SideBar = ({ isAdmin }) => {
     setSelectedItem(path);
   };
 
-  // Determine the role of the user
+  
   const userRole = isAdmin ? 'ADMIN':'USER';
 
   return (
